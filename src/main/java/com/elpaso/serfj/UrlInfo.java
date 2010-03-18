@@ -10,7 +10,7 @@ import java.util.Map;
  * @author: Eduardo Yáñez
  * Date: 10-may-2009
  */
-public class UrlInfo {
+class UrlInfo {
     private String url;
     private HttpMethod requestMethod;
     private String resource;

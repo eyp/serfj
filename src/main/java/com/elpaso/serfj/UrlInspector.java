@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author Eduardo Yáñez
  *         Date: 01-may-2009
  */
-public class UrlInspector {
+class UrlInspector {
     /**
      * Log.
      */
