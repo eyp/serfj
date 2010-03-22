@@ -111,18 +111,18 @@ public class RestServlet extends HttpServlet {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Calculating invocation strategy");
                 }
-            	ServletHelper.Strategy strategy = helper.calculateStrategy(urlInfo.getController());
+            	   ServletHelper.Strategy strategy = helper.calculateStrategy(urlInfo.getController());
                 if (logger.isDebugEnabled()) {
                     logger.debug("Strategy: {}", strategy);
                 }
-            	switch (strategy) {
-            	case INHERIT: 
-            		helper.inheritedStrategy(urlInfo, responseHelper);
-            		break;
-            	default:
-            		helper.signatureStrategy(urlInfo, responseHelper);
-            		break;
-            	}
+                switch (strategy) {
+                case INHERIT: 
+                    helper.inheritedStrategy(urlInfo, responseHelper);
+                	    break;
+                default:
+                	    helper.signatureStrategy(urlInfo, responseHelper);
+                	    break;
+                }
             } else {
                 if (logger.isWarnEnabled()) {
                     logger.warn("There is not controller defined for url [{}]", urlInfo.getUrl());
@@ -132,6 +132,7 @@ public class RestServlet extends HttpServlet {
             logger.warn(e.getLocalizedMessage(), e);
         } catch (IllegalArgumentException e) {
             logger.warn(e.getLocalizedMessage(), e); 
+            throw new ServletException(e);
         } catch (InvocationTargetException e) {
             logger.error(e.getLocalizedMessage(), e);
             throw new ServletException(e);

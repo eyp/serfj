@@ -132,4 +132,19 @@ public class UrlUtils {
         }
         return singular;
     }
+    
+    /**
+     * Gets the extension used in the URL, if any.
+     *
+     * @param url - An URl without query string params..
+     * @return an extension, or null if there isn't any.
+     */
+    public String getExtension(String url) {
+        int dotIndex = url.lastIndexOf(".");
+        String extension = null;
+        if (dotIndex > 0) {
+            extension = url.substring(dotIndex + 1);
+        }
+        return extension;
+    }
 }

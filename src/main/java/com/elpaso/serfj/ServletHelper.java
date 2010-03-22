@@ -7,6 +7,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.elpaso.serfj.annotations.DELETE;
+import com.elpaso.serfj.annotations.GET;
+import com.elpaso.serfj.annotations.POST;
+import com.elpaso.serfj.annotations.PUT;
+
 /**
  * Helper for {@link RestServlet}. It has some methods to know how to invoke actions on controllers.
  * 
@@ -92,7 +97,7 @@ class ServletHelper {
         if (logger.isDebugEnabled()) {
             logger.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
         }
-        action.invoke(controllerInstance);
+        this.invoke(controllerInstance, action, urlInfo);
     }
     
     /**
@@ -124,7 +129,7 @@ class ServletHelper {
             if (logger.isDebugEnabled()) {
                 logger.debug("Calling {}.{}(ResponseHelper, Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
             }
-            method.invoke(clazz.newInstance(), responseHelper, responseHelper.getParams());
+            this.invoke(clazz.newInstance(), method, urlInfo, responseHelper, responseHelper.getParams());
         } else {
             // action(ResponseHelper)
             method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {ResponseHelper.class});
@@ -132,7 +137,7 @@ class ServletHelper {
 	            if (logger.isDebugEnabled()) {
 	                logger.debug("Calling {}.{}(ResponseHelper)", urlInfo.getController(), urlInfo.getAction());
 	            }
-	            method.invoke(clazz.newInstance(), responseHelper);
+	            this.invoke(clazz.newInstance(), method, urlInfo, responseHelper);
             } else {
                 // action(Map<String,Object>)
 	            method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {Map.class});
@@ -140,17 +145,68 @@ class ServletHelper {
 		            if (logger.isDebugEnabled()) {
 		                logger.debug("Calling {}.{}(Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
 		            }
-		            method.invoke(clazz.newInstance(), responseHelper.getParams());
+	                this.invoke(clazz.newInstance(), method, urlInfo, responseHelper.getParams());
 	            } else {
 	                // action()
 		            method = clazz.getMethod(urlInfo.getAction(), new Class[] {});
 		            if (logger.isDebugEnabled()) {
 		                logger.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
 		            }
-		            method.invoke(clazz.newInstance());
+                    this.invoke(clazz.newInstance(), method, urlInfo);
 	            }
-
             }
         }
+    }
+    
+    /**
+     *  Invokes a method checking previously if that method accepts requests using a particular HTTP_METHOD.
+     *   
+     * @param clazz - A class.
+     * @param method - A method to invoke.
+     * @param urlInfo - URL information extracted by the framework.
+     * @param args - Arguments for the method which will be invoked.
+     * @throws IllegalArgumentException if the HTTP_METHOD that comes in the request is not accepted by
+     * class's method.
+     */
+    private void invoke(Object clazz, Method method, UrlInfo urlInfo, Object... args) 
+            throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        if (this.isRequestMethodServed(method, urlInfo.getRequestMethod())) {
+            method.invoke(clazz, args);
+        } else {
+            throw new IllegalArgumentException("Method " + urlInfo.getController() + "." + urlInfo.getAction() +  
+                    " doesn't accept requests by " + urlInfo.getRequestMethod() + " HTTP_METHOD");
+        }
+    }
+    
+    /**
+     * Checks if a resource's method attends HTTP requests using a 
+     * concrete HTTP_METHOD (GET, POST, PUT, DELETE). A method accept a particular HTTP_METHOD
+     * if it's annotated with the correct annotation (@GET, @POST, @PUT, @DELETE).
+     * 
+     * @param method - A class's method.
+     * @param httpMethod - HTTP_METHOD that comes in the request.
+     * @return <code>true</code> if the method accepts that HTTP_METHOD, <code>false</code> otherwise.
+     * 
+     * @throws IllegalArgumentException if HttpMethod is not supported.
+     */
+    private boolean isRequestMethodServed(Method method, HttpMethod httpMethod) throws IllegalArgumentException {
+        boolean accepts = false;
+        switch (httpMethod) {
+        case GET:
+            accepts = method.getAnnotation(GET.class) != null;
+            break;
+        case POST:
+            accepts = method.getAnnotation(POST.class) != null;
+            break;
+        case PUT:
+            accepts = method.getAnnotation(PUT.class) != null;
+            break;
+        case DELETE:
+            accepts = method.getAnnotation(DELETE.class) != null;
+            break;
+        default:
+            throw new IllegalArgumentException("HTTP method not supported: " + httpMethod);
+        }
+        return accepts;
     }
 }

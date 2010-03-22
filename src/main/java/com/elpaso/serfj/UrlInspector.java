@@ -87,7 +87,7 @@ class UrlInspector {
         info.setAction(defineAction(id, action, requestMethod));
         // Puts the result type
         info.setSerializer(this.getSerializerClass(resource, utils.removeQueryString(splits[lastElement])));
-        info.setExtension(this.getExtension(utils.removeQueryString(splits[lastElement])));
+        info.setExtension(this.utils.getExtension(utils.removeQueryString(splits[lastElement])));
         return info;
     }
 
@@ -193,7 +193,7 @@ class UrlInspector {
      */
     protected String getSerializerClass(String resource, String urlLastElement) {
         String serializerClass = null;
-        String extension = this.getExtension(urlLastElement);
+        String extension = this.utils.getExtension(urlLastElement);
         if (extension != null) {
             SerializerFinder finder = new SerializerFinder(config, extension);
             serializerClass = finder.findResource(resource);
@@ -201,18 +201,4 @@ class UrlInspector {
         return serializerClass;
     }
 
-    /**
-     * Gets the extension used in the URL, if any.
-     *
-     * @param urlLastElement - Last element of the URL analyzed.
-     * @return an extension, or null if there isn't any.
-     */
-    private String getExtension(String urlLastElement) {
-        int dotIndex = urlLastElement.lastIndexOf(".");
-        String extension = null;
-        if (dotIndex > 0) {
-            extension = urlLastElement.substring(dotIndex + 1);
-        }
-        return extension;
-    }
 }

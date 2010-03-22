@@ -51,6 +51,13 @@ public class ResourceFinder {
     }
 
     public String findResource(String model) {
+        if (model == null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Searching a default resource for model [{}]", model);
+            }
+            return this.defaultResource(model);
+        }
+
         String clazz;
         if (FUNCTIONAL_STYLE.equals(style)) {
             clazz = findByFunction(model);
