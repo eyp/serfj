@@ -14,7 +14,7 @@ class UrlInspector {
     /**
      * Log.
      */
-    private static final Logger logger = LoggerFactory.getLogger(UrlInspector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UrlInspector.class);
 
     // Standar actions.
     private static final String INDEX_ACTION = "index";
@@ -65,7 +65,7 @@ class UrlInspector {
         Integer lastElement = splits.length - 1;
         // Reverse loop to start for the resource or action
         for (int i = lastElement; i > 0; i--) {
-            String split = utils.cleanString(splits[i]);
+            String split = utils.cleanURL(splits[i]);
             if (resource == null && isResource(split)) {
                 resource = utils.singularize(split);
                 info.setController(getControllerClass(split));
@@ -84,7 +84,7 @@ class UrlInspector {
         // Puts the main resource
         info.setResource(resource);
         // Puts the REST action
-        info.setAction(defineAction(id, action, requestMethod));
+        info.setAction(deduceAction(id, action, requestMethod));
         // Puts the result type
         info.setSerializer(this.getSerializerClass(resource, utils.removeQueryString(splits[lastElement])));
         info.setExtension(this.utils.getExtension(utils.removeQueryString(splits[lastElement])));
@@ -92,7 +92,7 @@ class UrlInspector {
     }
 
     /**
-     * Checks if is the turn for the main id, or it is a secondary id.
+     * Checks if is  the main id, or it is a secondary id.
      *
      * @param id - Current id.
      * @param resource - Current resource.
@@ -102,31 +102,17 @@ class UrlInspector {
     private Boolean isMainId(String id, String resource, String lastElement) {
         Boolean isMainId = false;
         if (id == null) {
-            if (!utils.singularize(utils.cleanString(lastElement)).equals(resource)) {
-                if (resource == null) {
-                    isMainId = true;
-                }
+            if (!utils.singularize(utils.cleanURL(lastElement)).equals(resource) && resource == null) {
+                isMainId = true;
             }
         }
         return isMainId;
     }
 
-    private String defineAction(String id, String urlAction, HttpMethod requestMethod) {
+    private String deduceAction(String id, String urlAction, HttpMethod requestMethod) {
         String action = null;
         if (urlAction == null) {
-            if (requestMethod == HttpMethod.GET) {
-                if (id == null) {
-                    action = INDEX_ACTION;
-                } else {
-                    action = SHOW_ACTION;
-                }
-            } else if (requestMethod == HttpMethod.POST) {
-                action = CREATE_ACTION;
-            } else if (requestMethod == HttpMethod.DELETE) {
-                action = DESTROY_ACTION;
-            } else if (requestMethod.equals(HttpMethod.PUT)) {
-                action = UPDATE_ACTION;
-            }
+            action = this.getStandardAction(id, requestMethod);
         } else {
             if (requestMethod == HttpMethod.GET) {
                 if (id == null && urlAction.equals(NEW_ACTION)) {
@@ -143,6 +129,40 @@ class UrlInspector {
         return action;
     }
 
+    /**
+     * Deduces the action invoked when there isn't action in the URL. The action is
+     * deduced by the HTTP_METHOD used. If method is GET, it also has in count
+     * the ID, because it depends on it to know if action is 'show' or 'index'.<br/>
+     * <br/>
+     *  GET: with ID => show, without ID => index.<br/>
+     *  POST: create.<br/>
+     *  DELETE: destroy.<br/>
+     *  PUT: update.<br/>
+     * <br/>
+     * 
+     * @param id - Identifier, if any.
+     * @param requestMethod - HTTP METHOD (GET, POST, PUT, DELETE).
+     * 
+     * @return an action.
+     */
+    private String getStandardAction(String id, HttpMethod requestMethod) {
+        String action = null;
+        if (requestMethod == HttpMethod.GET) {
+            if (id == null) {
+                action = INDEX_ACTION;
+            } else {
+                action = SHOW_ACTION;
+            }
+        } else if (requestMethod == HttpMethod.POST) {
+            action = CREATE_ACTION;
+        } else if (requestMethod == HttpMethod.DELETE) {
+            action = DESTROY_ACTION;
+        } else if (requestMethod.equals(HttpMethod.PUT)) {
+            action = UPDATE_ACTION;
+        }
+        return action;
+    }
+    
     /**
      * Checks if a string represents a resource or not. If there is a class which could be
      * instantiated then is a resource, elsewhere it isn't
@@ -175,8 +195,8 @@ class UrlInspector {
     String getControllerClass(String resource) {
         ControllerFinder finder = new ControllerFinder(config);
         String controllerClass = finder.findResource(resource);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Controller class: {}", controllerClass);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Controller class: {}", controllerClass);
         }
         return controllerClass;
     }

@@ -32,6 +32,14 @@ public class SerializerFinder extends ResourceFinder {
 
     private static Map<String, String> contentType2Extension = new HashMap<String, String>(4);
     
+    public SerializerFinder(String extension) {
+        super(null, null, (extension == null ? PAGE_EXTENSION : extension),
+                OFF_OPTION, null);
+        contentType2Extension.put("application/json", "json");
+        contentType2Extension.put("text/xml", "xml");
+        contentType2Extension.put("application/octect-stream", "64");
+    }
+
     public SerializerFinder(Config config, String extension) {
         super(config.getString(Config.MAIN_PACKAGE), config.getString(Config.ALIAS_HELPERS_PACKAGE),
                 (extension == null ? PAGE_EXTENSION : extension),
@@ -60,15 +68,15 @@ public class SerializerFinder extends ResourceFinder {
         String serializer = super.defaultResource(model);
         if (serializer == null && isDefaultImplementation()) {
             serializer = MessageFormat.format("{0}.{1}Serializer", DEFAULT_SERIALIZERS_PACKAGE,
-                    utils.capitalize(this.prefix));
+                    this.getUtils().capitalize(this.getPrefix()));
         }
         return serializer;
     }
 
     private Boolean isDefaultImplementation() {
-        if (JSON_EXTENSION.equals(this.prefix.toLowerCase())
-            || B64_EXTENSION.equals(this.prefix.toLowerCase())
-            || XML_EXTENSION.equals(this.prefix.toLowerCase())) {
+        if (JSON_EXTENSION.equals(this.getPrefix().toLowerCase())
+            || B64_EXTENSION.equals(this.getPrefix().toLowerCase())
+            || XML_EXTENSION.equals(this.getPrefix().toLowerCase())) {
             return true;
         }
         return false;

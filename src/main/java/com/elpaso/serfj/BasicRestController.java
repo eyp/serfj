@@ -17,7 +17,7 @@ public interface BasicRestController {
      * 
      * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
      */
-    public void index(ResponseHelper response, Map<String, String> params) throws IOException;
+    void index(ResponseHelper response, Map<String, String> params) throws IOException;
     
     /**
      * Muestra los datos el recurso solicitado.
@@ -25,7 +25,7 @@ public interface BasicRestController {
      * 
      * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
      */
-    public void show(ResponseHelper response, Map<String, String> params) throws IOException;
+    void show(ResponseHelper response, Map<String, String> params) throws IOException;
 
     /**
      * Muestra la pantalla con el formulario adecuado para insertar los datos que se usarán
@@ -34,7 +34,7 @@ public interface BasicRestController {
      * 
      * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
      */
-    public void newResource(ResponseHelper response, Map<String, String> params) throws IOException;
+    void newResource(ResponseHelper response, Map<String, String> params) throws IOException;
     
     /**
      * Muestra la pantalla con el formulario adecuado para editar los datos que se usarán
@@ -43,7 +43,7 @@ public interface BasicRestController {
      * 
      * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
      */
-    public void edit(ResponseHelper response, Map<String, String> params) throws IOException;
+    void edit(ResponseHelper response, Map<String, String> params) throws IOException;
     
     /**
      * Cera un nuevo recurso.
@@ -51,7 +51,7 @@ public interface BasicRestController {
      * 
      * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
      */
-    public void create(ResponseHelper response, Map<String, String> params) throws IOException;
+    void create(ResponseHelper response, Map<String, String> params) throws IOException;
     
     /**
      * Modifica un recurso.
@@ -59,7 +59,7 @@ public interface BasicRestController {
      * 
      * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
      */
-    public void update(ResponseHelper response, Map<String, String> params) throws IOException;
+    void update(ResponseHelper response, Map<String, String> params) throws IOException;
     
     /**
      * Elimina un recurso.
@@ -67,5 +67,5 @@ public interface BasicRestController {
      * 
      * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
      */
-    public void delete(ResponseHelper response, Map<String, String> params) throws IOException;
+    void delete(ResponseHelper response, Map<String, String> params) throws IOException;
 }

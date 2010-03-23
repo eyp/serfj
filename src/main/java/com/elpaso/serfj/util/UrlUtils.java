@@ -9,12 +9,12 @@ import java.util.Map;
  * @author Eduardo Yáñez
  *
  */
-public class UrlUtils {
+public final class UrlUtils {
     
     /**
      * Instance.
      */
-    private static final UrlUtils instance = new UrlUtils();
+    private static final UrlUtils INSTANCE = new UrlUtils();
 
     /**
      * Predefined plurals and singulars.
@@ -42,7 +42,7 @@ public class UrlUtils {
      * Returns the unique instance of this class.
      */
     public static UrlUtils getInstance() {
-        return instance;
+        return INSTANCE;
     }
    
     /**
@@ -52,10 +52,11 @@ public class UrlUtils {
      * @return The received string or everything before a '?' character.
      */
     public String removeQueryString(String string) {
+        String pathWithoutQueryString = string;
         if (string != null && string.matches(".*\\?.*")) {
-            string = string.split("\\?")[0];
+            pathWithoutQueryString = string.split("\\?")[0];
         }
-        return string;
+        return pathWithoutQueryString;
     }
 
     /**
@@ -65,15 +66,28 @@ public class UrlUtils {
      * @return The received string or everything before a '?' character.
      */
     private String removeExtension(String string) {
-        int dotIndex = string.lastIndexOf(".");
+        String pathWithoutExtension = string; 
+        int dotIndex = string.lastIndexOf('.');
         if (dotIndex > 0) {
-            string = string.substring(0, dotIndex);
+            pathWithoutExtension = string.substring(0, dotIndex);
         }
-        return string;
+        return pathWithoutExtension;
     }
 
-    public String cleanString(String string) {
-        return this.removeQueryString(this.removeExtension(string));    
+    /**
+     * Removes the query string and the extension of a REST URL.
+     * 
+     * @param url - URL to clean.
+     * @return a cleaned URL.<br/> 
+     * <br/>
+     * If came:<br/>
+     * /sessions/1/banks.json?param1=bla&param2=blabla<br/>
+     * <br/>
+     * You'll get:<br/>
+     * /sessions/1/banks<br/>
+     */
+    public String cleanURL(String url) {
+        return this.removeQueryString(this.removeExtension(url));    
     }
 
     /**
@@ -140,7 +154,7 @@ public class UrlUtils {
      * @return an extension, or null if there isn't any.
      */
     public String getExtension(String url) {
-        int dotIndex = url.lastIndexOf(".");
+        int dotIndex = url.lastIndexOf('.');
         String extension = null;
         if (dotIndex > 0) {
             extension = url.substring(dotIndex + 1);

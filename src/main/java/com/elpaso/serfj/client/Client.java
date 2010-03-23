@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -40,7 +39,7 @@ public class Client {
 
     private StringBuilder urlString = new StringBuilder();
 
-    private Config config;
+    //private Config config;
     
     /**
      * Constructor. This constructor has to be used in case the server is in the same context as the client.
@@ -61,11 +60,12 @@ public class Client {
         if (host.lastIndexOf('/') != host.length() - 1 && host.length() != 1) {
             this.host += "/";
         }
+        /*
         try {
             config = new Config("/config/serfj.properties");
         } catch (ConfigFileIOException e) {
             LOGGER.error("Can't load framework configuration", e);
-        }
+        }*/
     }
 
     /**
@@ -107,8 +107,8 @@ public class Client {
      * @param params - Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    public void postRequest(String restUrl, Map<String, String> params) throws IOException {
-        this.postRequest(HttpMethod.POST, restUrl, params);
+    public Object postRequest(String restUrl, Map<String, String> params) throws IOException {
+        return this.postRequest(HttpMethod.POST, restUrl, params);
     }
 
     /**
@@ -118,8 +118,8 @@ public class Client {
      * @param params - Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    public void putRequest(String restUrl, Map<String, String> params) throws IOException {
-        this.postRequest(HttpMethod.PUT, restUrl, params);
+    public Object putRequest(String restUrl, Map<String, String> params) throws IOException {
+        return this.postRequest(HttpMethod.PUT, restUrl, params);
     }
 
     /**
@@ -129,8 +129,8 @@ public class Client {
      * @param params - Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    public void deleteRequest(String restUrl, Map<String, String> params) throws IOException {
-        this.postRequest(HttpMethod.DELETE, restUrl, params);
+    public Object deleteRequest(String restUrl, Map<String, String> params) throws IOException {
+        return this.postRequest(HttpMethod.DELETE, restUrl, params);
     }
 
     /**
@@ -165,14 +165,15 @@ public class Client {
             }
             wr.write(this.makeParamsString(params));
             wr.flush();
-            wr.close();
-            wr = null;
             // Gets the response
             return this.readResponse(restUrl, conn);
         } catch (IOException e) {
             LOGGER.error("Request error", e);
             throw e;
         } finally {
+            if (wr != null) {
+                wr.close();
+            }
             if (conn != null) {
                 conn.disconnect();
             }
@@ -211,7 +212,7 @@ public class Client {
      * @param params - Parameters and their values.
      * 
      * @return a string with the parameters. This string can be appended to a query string, or written to an
-     * {@link OutputStream}.
+     * OutputStream.
      */
     private String makeParamsString(Map<String, String> params) {
         StringBuilder url = new StringBuilder();
@@ -219,7 +220,7 @@ public class Client {
             boolean first = true;
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 if (first) {
-                    url.append("?");
+                    //url.append("?");
                     first = false;
                 } else {
                     url.append("&");
@@ -241,20 +242,20 @@ public class Client {
      * Deserializes a serialized object that came within the response after a REST call.
      * 
      * @param serializedObject - Serialized object.
-     * @param contentType - Content type used for serialization.
+     * @param extension - URL's extension (json, 64, xml, etc...).
      * @return a deserialized object.
      * 
      * @throws IOException if object can't be deserialized.
      */
-    private Object deserialize(String serializedObject, String contentType) throws IOException {
-        SerializerFinder finder = new SerializerFinder(config, SerializerFinder.getExtension(contentType));
+    private Object deserialize(String serializedObject, String extension) throws IOException {
+        SerializerFinder finder = new SerializerFinder(extension);
         String serializerClass = finder.findResource(null);
         try {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Serializing using {}", serializerClass);
             }
             Class<?> clazz = Class.forName(serializerClass);
-            Method deserializeMethod = clazz.getMethod("deserialize", new Class[] {Serializable.class});
+            Method deserializeMethod = clazz.getMethod("deserialize", new Class[] {String.class});
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Calling {}.serialize", serializerClass);
             }

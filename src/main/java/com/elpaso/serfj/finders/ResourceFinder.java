@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory;
  * Date: 08-may-2009
  */
 public class ResourceFinder {
-    private static final Logger logger = LoggerFactory.getLogger(ResourceFinder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceFinder.class);
     
     private static final String MODEL_STYLE = "model";
     private static final String FUNCTIONAL_BY_MODEL_STYLE = "functional_by_model";
     private static final String FUNCTIONAL_STYLE = "functional";
-    private static final String OFF_OPTION = "OFF";
+    protected static final String OFF_OPTION = "OFF";
     
     /**
      * Default package for classes used when some class is not found and there is a SERFJ implementation
@@ -25,12 +25,12 @@ public class ResourceFinder {
      */
     protected static final String DEFAULT_PACKAGE = "com.elpaso.serfj";
 
-    protected String mainPackage;
+    private String mainPackage;
     private String alias;
-    protected String prefix;
+    private String prefix;
     private String suffix;
     private String style;
-    protected UrlUtils utils = UrlUtils.getInstance();
+    private UrlUtils utils = UrlUtils.getInstance();
 
     ResourceFinder(String mainPackage, String alias, String prefix, String suffix, String style) {
         this(mainPackage, alias, suffix, style);
@@ -38,9 +38,9 @@ public class ResourceFinder {
     }
 
     public ResourceFinder(String mainPackage, String alias, String suffix, String style) {
-        if (logger.isDebugEnabled()) {
+        if (LOGGER.isDebugEnabled()) {
             Object[] params = new Object[] {mainPackage, alias, suffix, style};
-            logger.debug("MainPackage [{}], Alias [{}], Suffix [{}], Style [{}]", params);
+            LOGGER.debug("MainPackage [{}], Alias [{}], Suffix [{}], Style [{}]", params);
         }
         this.mainPackage = mainPackage;
         this.alias = alias;
@@ -52,10 +52,10 @@ public class ResourceFinder {
 
     public String findResource(String model) {
         if (model == null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Searching a default resource for model [{}]", model);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Searching a default resource for no model");
             }
-            return this.defaultResource(model);
+            return this.defaultResource(null);
         }
 
         String clazz;
@@ -77,8 +77,8 @@ public class ResourceFinder {
             }
         }
         if (clazz == null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Searching a default resource for model [{}]", model);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Searching a default resource for model [{}]", model);
             }
             clazz = this.defaultResource(model);
         }
@@ -101,8 +101,8 @@ public class ResourceFinder {
         try {
             Class.forName(clazz);
         } catch (ClassNotFoundException e) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Class {} doesn't exists in the Classpath", clazz);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Class {} doesn't exists in the Classpath", clazz);
             }
             exists = false;
         }
@@ -111,8 +111,8 @@ public class ResourceFinder {
 
     protected String findByFunction(String model) {
         String clazz = MessageFormat.format("{0}.{1}.{2}", mainPackage, alias, this.makeClassName(model));
-        if (logger.isDebugEnabled()) {
-            logger.debug("Searching resource [{}] by FUNCTIONAL style", clazz);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Searching resource [{}] by FUNCTIONAL style", clazz);
         }
         if (!existsClass(clazz)) {
             return null;
@@ -123,8 +123,8 @@ public class ResourceFinder {
     protected String findByFunctionAndModel(String model) {
         String clazz = MessageFormat.format("{0}.{1}.{2}.{3}", mainPackage, utils.singularize(model),
                 alias, this.makeClassName(model));
-        if (logger.isDebugEnabled()) {
-            logger.debug("Searching resource [{}] by FUNCTIONAL BY MODEL style", clazz);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Searching resource [{}] by FUNCTIONAL BY MODEL style", clazz);
         }
         if (!existsClass(clazz)) {
             return null;
@@ -135,8 +135,8 @@ public class ResourceFinder {
     protected String findByModel(String model) {
         String clazz = MessageFormat.format("{0}.{1}.{2}", mainPackage, utils.singularize(model),
                 this.makeClassName(model));
-        if (logger.isDebugEnabled()) {
-            logger.debug("Searching resource [{}] by MODEL style", clazz);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Searching resource [{}] by MODEL style", clazz);
         }
         if (!existsClass(clazz)) {
             return null;
@@ -148,5 +148,13 @@ public class ResourceFinder {
         String clazz = MessageFormat.format("{0}{1}{2}", utils.capitalize(prefix),
                 utils.capitalize(utils.singularize(model)), utils.capitalize(suffix));
         return clazz;
+    }
+
+    protected String getPrefix() {
+        return this.prefix;
+    }
+
+    protected UrlUtils getUtils() {
+        return this.utils;
     }
 }

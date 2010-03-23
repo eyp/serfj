@@ -45,7 +45,7 @@ public class RestAction {
     }
     
 	protected String getId(String resource) {
-		return this.getId(resource);
+		return this.response.getId(resource);
 	}
 
     /**

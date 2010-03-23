@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ResponseHelper {
 
-    private static final Logger logger = LoggerFactory.getLogger(ResponseHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponseHelper.class);
     private ServletContext context;
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -85,7 +85,7 @@ public class ResponseHelper {
         if (resource != null) {
             path +=  resource + "/";
         }
-        if (page.indexOf(".") > 1) {
+        if (page.indexOf('.') > 1) {
             this.requestedPage = path + page;
         } else {
             // Search a page with .jsp, .html or .htm extension
@@ -181,23 +181,23 @@ public class ResponseHelper {
 
     protected void serialize() throws IOException {
         try {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Serializing using {}", urlInfo.getSerializer());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Serializing using {}", urlInfo.getSerializer());
             }
             Class<?> clazz = Class.forName(urlInfo.getSerializer());
             Method serializeMethod = clazz.getMethod("serialize", new Class[] {Serializable.class});
-            if (logger.isDebugEnabled()) {
-                logger.debug("Calling {}.serialize", urlInfo.getSerializer());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Calling {}.serialize", urlInfo.getSerializer());
             }
             String serialized = (String) serializeMethod.invoke(clazz.newInstance(), this.object2Serialize);
             Method contentTypeMethod = clazz.getMethod("getContentType");
-            if (logger.isDebugEnabled()) {
-                logger.debug("Calling {}.getContentType()", urlInfo.getSerializer());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Calling {}.getContentType()", urlInfo.getSerializer());
             }
             String contentType = (String) contentTypeMethod.invoke(clazz.newInstance());
             this.writeObject(contentType, serialized);
         } catch (Exception e) {
-            logger.error("Can't serialize object with {} serializer: {}",
+            LOGGER.error("Can't serialize object with {} serializer: {}",
                     urlInfo.getSerializer(), e.getLocalizedMessage());
             throw new IOException(e.getLocalizedMessage());
         }
@@ -210,12 +210,12 @@ public class ResponseHelper {
             try {
                 request.setAttribute("identifiers", urlInfo.getIdentifiers());
                 RequestDispatcher dispatcher = context.getRequestDispatcher(requestedPage);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Forwarding to {}", requestedPage);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Forwarding to {}", requestedPage);
                 }
                 dispatcher.forward(request, response);
             } catch (ServletException e) {
-                logger.error(e.getLocalizedMessage(), e);
+                LOGGER.error(e.getLocalizedMessage(), e);
                 throw e;
             }
         }
@@ -243,8 +243,8 @@ public class ResponseHelper {
                 }
             }
         } catch (MalformedURLException e) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("URL for page is not well formed", e);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("URL for page is not well formed", e);
             }
             page = "";
         }
@@ -275,14 +275,14 @@ public class ResponseHelper {
      */
     private Boolean existsPage(String page) throws MalformedURLException {
         // Searching the page...
-        if (logger.isDebugEnabled()) {
-            logger.debug("Searching page [{}]...", page);
-            logger.debug("Page's real path is [{}]", this.context.getRealPath(page));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Searching page [{}]...", page);
+            LOGGER.debug("Page's real path is [{}]", this.context.getRealPath(page));
         }
         File file = new File(this.context.getRealPath(page));
         Boolean exists = file.exists();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Page [{}]{}found", page, (exists ? " " : " not "));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Page [{}]{}found", page, (exists ? " " : " not "));
         }
         return exists;
     }

@@ -2,7 +2,6 @@ package com.elpaso.serfj;
 
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import com.elpaso.config.ConfigFileIOException;
 
 /**
- * Clase principal. Este servlet hace de dispatcher, es decir, recibe una URL
- * tipo REST, y redirige la petición al controlador correspondiente, pasándole
- * si es necesario los identificadores que vengan en la petición.
+ * Main class. This servlet dispatches REST requests to controllers. It parses 
+ * the URL, extracting resources and resources' Ids so developer will be able
+ * to get them in the method's controller.
  * 
  * @author Eduardo Yáñez
  *
@@ -29,7 +28,7 @@ public class RestServlet extends HttpServlet {
 	/**
      * Log.
      */
-    private static final Logger logger = LoggerFactory.getLogger(RestServlet.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestServlet.class);
 
     /**
      * Parameter for supply the HTTP request method that doesn't support the browsers (PUT and DELETE),
@@ -60,7 +59,7 @@ public class RestServlet extends HttpServlet {
         try {
             config = new Config("/config/serfj.properties");
         } catch (ConfigFileIOException e) {
-            logger.error("Can't load framework configuration", e);
+            LOGGER.error("Can't load framework configuration", e);
             throw new ServletException(e);
         }
         urlInspector = new UrlInspector(config);
@@ -74,18 +73,18 @@ public class RestServlet extends HttpServlet {
             throws ServletException, IOException {
         // Eliminamos de la URI el contexto
         String url = request.getRequestURI().substring(request.getContextPath().length());
-        if (logger.isDebugEnabled()) {
-            logger.debug("url => {}", url);
-            logger.debug("HTTP_METHOD => {}", request.getMethod());
-            logger.debug("queryString => {}", request.getQueryString());
-            logger.debug("Context [{}]", request.getContextPath());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("url => {}", url);
+            LOGGER.debug("HTTP_METHOD => {}", request.getMethod());
+            LOGGER.debug("queryString => {}", request.getQueryString());
+            LOGGER.debug("Context [{}]", request.getContextPath());
         }
         
         HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod());
         if (requestMethod == HttpMethod.POST) {
             String httpMethodParam = request.getParameter(HTTP_METHOD_PARAM);
-            if (logger.isDebugEnabled()) {
-                logger.debug("param: http_method => {}", httpMethodParam);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("param: http_method => {}", httpMethodParam);
             }
             if (httpMethodParam != null) {
                 requestMethod = HttpMethod.valueOf(httpMethodParam);
@@ -93,8 +92,8 @@ public class RestServlet extends HttpServlet {
         }
         // Getting all the information from the URL
         UrlInfo urlInfo = urlInspector.getUrlInfo(url, requestMethod);
-        if (logger.isDebugEnabled()) {
-            logger.debug("URL info {}", urlInfo.toString());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("URL info {}", urlInfo.toString());
         }
         // Calling the controller's action
         ResponseHelper responseHelper = new ResponseHelper(this.getServletContext(), request, response, 
@@ -108,43 +107,29 @@ public class RestServlet extends HttpServlet {
         try {
             // May be there isn't any controller, so the page will be rendered without calling any action
             if (urlInfo.getController() != null) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Calculating invocation strategy");
-                }
             	   ServletHelper.Strategy strategy = helper.calculateStrategy(urlInfo.getController());
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Strategy: {}", strategy);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Strategy: {}", strategy);
                 }
                 switch (strategy) {
                 case INHERIT: 
-                    helper.inheritedStrategy(urlInfo, responseHelper);
+                     helper.inheritedStrategy(urlInfo, responseHelper);
                 	    break;
                 default:
                 	    helper.signatureStrategy(urlInfo, responseHelper);
                 	    break;
                 }
             } else {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("There is not controller defined for url [{}]", urlInfo.getUrl());
-                }
+                LOGGER.warn("There is not controller defined for url [{}]", urlInfo.getUrl());
             }
         } catch (ClassNotFoundException e) {
-            logger.warn(e.getLocalizedMessage(), e);
-        } catch (IllegalArgumentException e) {
-            logger.warn(e.getLocalizedMessage(), e); 
-            throw new ServletException(e);
-        } catch (InvocationTargetException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            throw new ServletException(e);
-        } catch (IllegalAccessException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            throw new ServletException(e);
+            LOGGER.warn(e.getLocalizedMessage(), e);
         } catch (NoSuchMethodException e) {
-            logger.warn("NoSuchMethodException {}", e.getLocalizedMessage());
-        } catch (InstantiationException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            LOGGER.warn("NoSuchMethodException {}", e.getLocalizedMessage());
+        } catch (Exception e) {
+            LOGGER.warn(e.getLocalizedMessage(), e); 
             throw new ServletException(e);
-        }
+        } 
     }
     
 }

@@ -24,7 +24,7 @@ class ServletHelper {
 	/**
      * Log.
      */
-    private static final Logger logger = LoggerFactory.getLogger(ServletHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServletHelper.class);
 
     /**
      * Strategy to invoke action on the controller.
@@ -57,6 +57,9 @@ class ServletHelper {
      * @throws ClassNotFoundException if controller's class doesn't exist.
      */
     Strategy calculateStrategy(String controller) throws ClassNotFoundException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Calculating invocation strategy");
+        }
         Class<?> clazz = Class.forName(controller);
         	if (RestAction.class.isAssignableFrom(clazz)) {
         		return Strategy.INHERIT;
@@ -81,21 +84,21 @@ class ServletHelper {
      * @throws InstantiationException if it isn't possible to instantiate the controller.
      */
     void inheritedStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) 
-    	throws ClassNotFoundException, NoSuchMethodException, IllegalArgumentException, 
+    	throws ClassNotFoundException, NoSuchMethodException,  
     		IllegalAccessException, InvocationTargetException, InstantiationException {
         Class<?> clazz = Class.forName(urlInfo.getController());
         Method setResponseHelper = clazz.getMethod("setResponseHelper", new Class<?>[] {ResponseHelper.class});
-        if (logger.isDebugEnabled()) {
-            logger.debug("Instantiating controller {}", clazz.getCanonicalName());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Instantiating controller {}", clazz.getCanonicalName());
         }
         Object controllerInstance = clazz.newInstance();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Calling {}.setResponseHelper(ResponseHelper)", clazz.getCanonicalName());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Calling {}.setResponseHelper(ResponseHelper)", clazz.getCanonicalName());
         }
         setResponseHelper.invoke(controllerInstance, responseHelper);
         Method action = clazz.getMethod(urlInfo.getAction(), new Class[] {});
-        if (logger.isDebugEnabled()) {
-            logger.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
         }
         this.invoke(controllerInstance, action, urlInfo);
     }
@@ -120,37 +123,37 @@ class ServletHelper {
      * @throws InstantiationException if it isn't possible to instantiate the controller.
      */
     void signatureStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) 
-    	throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, 
+    	throws ClassNotFoundException, IllegalAccessException, 
     			InvocationTargetException, InstantiationException, NoSuchMethodException {
         Class<?> clazz = Class.forName(urlInfo.getController());
         // action(ResponseHelper, Map<String,Object>)
         Method method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {ResponseHelper.class, Map.class});
         if (method != null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Calling {}.{}(ResponseHelper, Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Calling {}.{}(ResponseHelper, Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
             }
             this.invoke(clazz.newInstance(), method, urlInfo, responseHelper, responseHelper.getParams());
         } else {
             // action(ResponseHelper)
             method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {ResponseHelper.class});
             if (method != null) {
-	            if (logger.isDebugEnabled()) {
-	                logger.debug("Calling {}.{}(ResponseHelper)", urlInfo.getController(), urlInfo.getAction());
+	            if (LOGGER.isDebugEnabled()) {
+	                LOGGER.debug("Calling {}.{}(ResponseHelper)", urlInfo.getController(), urlInfo.getAction());
 	            }
 	            this.invoke(clazz.newInstance(), method, urlInfo, responseHelper);
             } else {
                 // action(Map<String,Object>)
 	            method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {Map.class});
 	            if (method != null) {
-		            if (logger.isDebugEnabled()) {
-		                logger.debug("Calling {}.{}(Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
+		            if (LOGGER.isDebugEnabled()) {
+		                LOGGER.debug("Calling {}.{}(Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
 		            }
 	                this.invoke(clazz.newInstance(), method, urlInfo, responseHelper.getParams());
 	            } else {
 	                // action()
 		            method = clazz.getMethod(urlInfo.getAction(), new Class[] {});
-		            if (logger.isDebugEnabled()) {
-		                logger.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
+		            if (LOGGER.isDebugEnabled()) {
+		                LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
 		            }
                     this.invoke(clazz.newInstance(), method, urlInfo);
 	            }
@@ -169,7 +172,7 @@ class ServletHelper {
      * class's method.
      */
     private void invoke(Object clazz, Method method, UrlInfo urlInfo, Object... args) 
-            throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException {
         if (this.isRequestMethodServed(method, urlInfo.getRequestMethod())) {
             method.invoke(clazz, args);
         } else {
@@ -189,7 +192,7 @@ class ServletHelper {
      * 
      * @throws IllegalArgumentException if HttpMethod is not supported.
      */
-    private boolean isRequestMethodServed(Method method, HttpMethod httpMethod) throws IllegalArgumentException {
+    private boolean isRequestMethodServed(Method method, HttpMethod httpMethod) {
         boolean accepts = false;
         switch (httpMethod) {
         case GET:
