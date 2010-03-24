@@ -83,7 +83,7 @@ class ServletHelper {
      * @throws InvocationTargetException if the controller's method raise an exception.
      * @throws InstantiationException if it isn't possible to instantiate the controller.
      */
-    void inheritedStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) 
+    Object inheritedStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) 
     	throws ClassNotFoundException, NoSuchMethodException,  
     		IllegalAccessException, InvocationTargetException, InstantiationException {
         Class<?> clazz = Class.forName(urlInfo.getController());
@@ -100,7 +100,8 @@ class ServletHelper {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
         }
-        this.invoke(controllerInstance, action, urlInfo);
+        responseHelper.notRenderPage(action);
+        return this.invoke(controllerInstance, action, urlInfo);
     }
     
     /**
@@ -122,17 +123,19 @@ class ServletHelper {
      * @throws InvocationTargetException if the controller's method raise an exception.
      * @throws InstantiationException if it isn't possible to instantiate the controller.
      */
-    void signatureStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) 
+    Object signatureStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) 
     	throws ClassNotFoundException, IllegalAccessException, 
     			InvocationTargetException, InstantiationException, NoSuchMethodException {
         Class<?> clazz = Class.forName(urlInfo.getController());
+        Object result = null;
         // action(ResponseHelper, Map<String,Object>)
         Method method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {ResponseHelper.class, Map.class});
         if (method != null) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Calling {}.{}(ResponseHelper, Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
             }
-            this.invoke(clazz.newInstance(), method, urlInfo, responseHelper, responseHelper.getParams());
+            responseHelper.notRenderPage(method);
+            result = this.invoke(clazz.newInstance(), method, urlInfo, responseHelper, responseHelper.getParams());
         } else {
             // action(ResponseHelper)
             method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {ResponseHelper.class});
@@ -140,7 +143,8 @@ class ServletHelper {
 	            if (LOGGER.isDebugEnabled()) {
 	                LOGGER.debug("Calling {}.{}(ResponseHelper)", urlInfo.getController(), urlInfo.getAction());
 	            }
-	            this.invoke(clazz.newInstance(), method, urlInfo, responseHelper);
+	            responseHelper.notRenderPage(method);
+	            result = this.invoke(clazz.newInstance(), method, urlInfo, responseHelper);
             } else {
                 // action(Map<String,Object>)
 	            method = this.methodExists(clazz, urlInfo.getAction(), new Class[] {Map.class});
@@ -148,17 +152,20 @@ class ServletHelper {
 		            if (LOGGER.isDebugEnabled()) {
 		                LOGGER.debug("Calling {}.{}(Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
 		            }
-	                this.invoke(clazz.newInstance(), method, urlInfo, responseHelper.getParams());
+		            responseHelper.notRenderPage(method);
+	                result = this.invoke(clazz.newInstance(), method, urlInfo, responseHelper.getParams());
 	            } else {
 	                // action()
 		            method = clazz.getMethod(urlInfo.getAction(), new Class[] {});
 		            if (LOGGER.isDebugEnabled()) {
 		                LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
 		            }
-                    this.invoke(clazz.newInstance(), method, urlInfo);
+		            responseHelper.notRenderPage(method);
+                    result = this.invoke(clazz.newInstance(), method, urlInfo);
 	            }
             }
         }
+        return result;
     }
     
     /**
@@ -168,13 +175,14 @@ class ServletHelper {
      * @param method - A method to invoke.
      * @param urlInfo - URL information extracted by the framework.
      * @param args - Arguments for the method which will be invoked.
+     * @return the object returned by the method onvoked, or null.
      * @throws IllegalArgumentException if the HTTP_METHOD that comes in the request is not accepted by
      * class's method.
      */
-    private void invoke(Object clazz, Method method, UrlInfo urlInfo, Object... args) 
+    private Object invoke(Object clazz, Method method, UrlInfo urlInfo, Object... args) 
             throws IllegalAccessException, InvocationTargetException {
         if (this.isRequestMethodServed(method, urlInfo.getRequestMethod())) {
-            method.invoke(clazz, args);
+            return method.invoke(clazz, args);
         } else {
             throw new IllegalArgumentException("Method " + urlInfo.getController() + "." + urlInfo.getAction() +  
                     " doesn't accept requests by " + urlInfo.getRequestMethod() + " HTTP_METHOD");

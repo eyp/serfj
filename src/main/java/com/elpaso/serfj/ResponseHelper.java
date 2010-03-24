@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.elpaso.serfj.annotations.GET;
+import com.elpaso.serfj.annotations.NotRenderPage;
 
 /**
  * This class allows the developer to render the predefined page for an action, or to render the
@@ -35,6 +39,7 @@ public class ResponseHelper {
     private String requestedPage;
     private Object object2Serialize;
     private Map<String, Object> params;
+    private boolean notRenderPage = false;
 
     /**
      * Constructor.
@@ -49,12 +54,24 @@ public class ResponseHelper {
         this.initParams();
     }
 
+	/**
+	 * If the method is annotated with {@link NotRenderPage}, 
+	 * marks the response as not to render any page. If there isn't object to serialize
+	 * in the response and notRenderPage flag is set on, the framework will return 
+	 * a HTTP status code 204 (No content), else a page will be rendered.
+	 * 
+	 *  @param method - Method to inspect.
+	 */
+	public void notRenderPage(Method method) {
+	    this.notRenderPage = method.getAnnotation(NotRenderPage.class) != null;
+	}
+	
     /**
      * Renders the predefined page.
      *
      * @throws IOException if the page doesn't exist.
      */
-    public void renderPage()throws IOException {
+    public void renderPage() throws IOException {
         this.requestedPage = this.getPage();
     }
 
@@ -165,14 +182,21 @@ public class ResponseHelper {
     protected void doResponse() throws IOException, ServletException {
         if (!response.isCommitted()) {
             if (urlInfo.getSerializer() == null) {
-                if (requestedPage == null) {
-                    requestedPage = this.getPage();
+                if (this.notRenderPage) {
+                    response.setStatus(HttpURLConnection.HTTP_NO_CONTENT);
+                    response.getWriter().flush();
+                } else {
+                    if (requestedPage == null) {
+                        requestedPage = this.getPage();
+                    }
+                    this.forward();
                 }
-                this.forward();
             } else {
                 if (this.object2Serialize == null) {
-                    throw new IllegalStateException("There is not object to serialize, must " +
-                            "set the object using ResponseHelper.serialize method");
+                    LOGGER.warn("There is not object to serialize, returning no content response code: {}", 
+                            HttpURLConnection.HTTP_NO_CONTENT);
+                    response.setStatus(HttpURLConnection.HTTP_NO_CONTENT);
+                    response.getWriter().flush();
                 }
                 this.serialize();
             }

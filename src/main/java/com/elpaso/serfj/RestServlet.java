@@ -111,13 +111,19 @@ public class RestServlet extends HttpServlet {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Strategy: {}", strategy);
                 }
+                Object result = null;
                 switch (strategy) {
                 case INHERIT: 
-                     helper.inheritedStrategy(urlInfo, responseHelper);
+                     result = helper.inheritedStrategy(urlInfo, responseHelper);
                 	    break;
                 default:
-                	    helper.signatureStrategy(urlInfo, responseHelper);
+                	    result = helper.signatureStrategy(urlInfo, responseHelper);
                 	    break;
+                }
+                // Si hay un resultado, lo serializamos, así no lo tiene que hacer el 
+                // desarrollador en el método del controlador
+                if (result != null) {
+                    responseHelper.serialize(result);
                 }
             } else {
                 LOGGER.warn("There is not controller defined for url [{}]", urlInfo.getUrl());

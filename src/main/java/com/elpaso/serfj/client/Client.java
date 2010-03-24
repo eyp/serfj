@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -16,8 +15,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.elpaso.config.ConfigFileIOException;
-import com.elpaso.serfj.Config;
 import com.elpaso.serfj.HttpMethod;
 import com.elpaso.serfj.finders.SerializerFinder;
 import com.elpaso.serfj.util.UrlUtils;
@@ -80,7 +77,7 @@ public class Client {
         try {
             // Make the URL
             urlString = new StringBuilder(this.host).append(restUrl);
-            urlString.append(this.makeParamsString(params));
+            urlString.append(this.makeParamsString(params, true));
             LOGGER.debug("Doing HTTP request: GET [{}]", urlString.toString());
             // Connection configuration
             URL url = new URL(urlString.toString());
@@ -163,7 +160,7 @@ public class Client {
             if (httpMethod != HttpMethod.POST) {
                 params.put("http_method", httpMethod.name());
             }
-            wr.write(this.makeParamsString(params));
+            wr.write(this.makeParamsString(params, false));
             wr.flush();
             // Gets the response
             return this.readResponse(restUrl, conn);
@@ -210,17 +207,21 @@ public class Client {
      * Adds params to a query string. It will encode params' values to not get errors in the connection.
      * 
      * @param params - Parameters and their values.
+     * @param isGet - Indicates a GET request. A GET request has to mark the first parameter with the '?' symbol.
+     * In a POST request it doesn't have to do it. 
      * 
      * @return a string with the parameters. This string can be appended to a query string, or written to an
      * OutputStream.
      */
-    private String makeParamsString(Map<String, String> params) {
+    private String makeParamsString(Map<String, String> params, boolean isGet) {
         StringBuilder url = new StringBuilder();
         if (params != null) {
             boolean first = true;
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 if (first) {
-                    //url.append("?");
+                    if (isGet) {
+                        url.append("?");
+                    }
                     first = false;
                 } else {
                     url.append("&");
