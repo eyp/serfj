@@ -36,7 +36,7 @@ public class RestAction {
     /**
      * Returns parameter's value that is a String.
      * 
-     * @param name - Parameter's name.
+     * @param name Parameter's name.
      * @return Parameter's value.
      * @throws ClassCastException if the value is not a {@link String}.
      */
@@ -60,7 +60,7 @@ public class RestAction {
     /**
      * Renders some page within 'views' directory.
      *
-     * @param page - The page could have an extension or not. If it doesn't have an extension, the framework
+     * @param page The page could have an extension or not. If it doesn't have an extension, the framework
      * first looks for page.jsp, then .html or .htm extension.
      *
      * @throws IOException if the page doesn't exist.
@@ -72,8 +72,8 @@ public class RestAction {
     /**
      * Renders a page from a resource.
      *
-     * @param resource - The name of the resource (bank, account, etc...). It must exists below /views directory.
-     * @param page - The page can have an extension or not. If it doesn't have an extension, the framework
+     * @param resource The name of the resource (bank, account, etc...). It must exists below /views directory.
+     * @param page The page can have an extension or not. If it doesn't have an extension, the framework
      * first looks for page.jsp, then with .html or .htm extension.
      *
      * @throws IOException if the page doesn't exist.
@@ -86,7 +86,7 @@ public class RestAction {
      * Serialize an object. Serializer class used to process the object can be
      * known using ResponseHelper.getSerializer() method.
      *
-     * @param object - Object to serialize.
+     * @param object Object to serialize.
      */
     public void serialize(Object object) {
     	this.response.serialize(object);

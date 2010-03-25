@@ -51,8 +51,8 @@ class UrlInspector {
      * /orders/1/items/2
      * /orders/1/items/2/edit
      *
-     * @param url - Url to process.
-     * @param requestMethod - HTTP request method (GET, POST, PUT, DELETE)
+     * @param url Url to process.
+     * @param requestMethod HTTP request method (GET, POST, PUT, DELETE)
      * @return an object with all the information related with the URL.
      */
     public UrlInfo getUrlInfo(String url, HttpMethod requestMethod) {
@@ -94,9 +94,9 @@ class UrlInspector {
     /**
      * Checks if is  the main id, or it is a secondary id.
      *
-     * @param id - Current id.
-     * @param resource - Current resource.
-     * @param lastElement - Last element of the URL.
+     * @param id Current id.
+     * @param resource Current resource.
+     * @param lastElement Last element of the URL.
      * @return true if is the main id, false otherwise.
      */
     private Boolean isMainId(String id, String resource, String lastElement) {
@@ -140,8 +140,8 @@ class UrlInspector {
      *  PUT: update.<br/>
      * <br/>
      * 
-     * @param id - Identifier, if any.
-     * @param requestMethod - HTTP METHOD (GET, POST, PUT, DELETE).
+     * @param id Identifier, if any.
+     * @param requestMethod HTTP METHOD (GET, POST, PUT, DELETE).
      * 
      * @return an action.
      */
@@ -167,7 +167,7 @@ class UrlInspector {
      * Checks if a string represents a resource or not. If there is a class which could be
      * instantiated then is a resource, elsewhere it isn't
      *
-     * @param resource - String that coulb be a resource.
+     * @param resource String that coulb be a resource.
      * @return true if chunk is a resource.
      */
     Boolean isResource(String resource) {
@@ -189,7 +189,7 @@ class UrlInspector {
     /**
      * Gets controller class for a resource.
      *
-     * @param resource - Resource that will managed by the controller class.
+     * @param resource Resource that will managed by the controller class.
      * @return The fully qualified name of the controller class for this resource and extension.
      */
     String getControllerClass(String resource) {
@@ -207,8 +207,8 @@ class UrlInspector {
      * is .xml it hopes that a ResourceNameXmlSerializer exists to render the resource as Xml.
      * The extension can be anything.
      *
-     * @param resource - Resource that will managed by the controller class.
-     * @param urlLastElement - Last element of the URL analyzed.
+     * @param resource Resource that will managed by the controller class.
+     * @param urlLastElement Last element of the URL analyzed.
      * @return The fully qualified name of the serializer class for this resource and extension.
      */
     protected String getSerializerClass(String resource, String urlLastElement) {

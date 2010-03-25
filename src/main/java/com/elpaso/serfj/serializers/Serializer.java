@@ -1,6 +1,5 @@
 package com.elpaso.serfj.serializers;
 
-import java.io.Serializable;
 
 /**
  * Interface for Serializers.
@@ -11,15 +10,15 @@ public interface Serializer {
     /**
      * Serialize an object in the format that the implementation requires.
      *
-     * @param object - Object to serialize.
+     * @param object Object to serialize.
      * @return a String with the object serialized.
      */
-    public String serialize(Serializable object);
+    public String serialize(Object object);
 
     /**
      * Deserialize an object from the format that the implementation requires to Java Object.
      *
-     * @param string - String representation of the object to deserialize.
+     * @param string String representation of the object to deserialize.
      * @return an Object.
      */
     public Object deserialize(String string);

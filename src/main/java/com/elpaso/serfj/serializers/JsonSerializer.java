@@ -1,6 +1,7 @@
 package com.elpaso.serfj.serializers;
 
-import java.io.Serializable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
@@ -13,30 +14,40 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
  */
 public class JsonSerializer implements Serializer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializer.class);
+    
     /**
      * Serializes an object to Json.
-     * 
-     * @see com.elpaso.serfj.serializers.Serializer#serialize(java.io.Serializable)
      */
-    public String serialize(Serializable object) {
+    public String serialize(Object object) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Serializing object: {}", object);
+        }
         XStream xstream = new XStream(new JettisonMappedXmlDriver());
-        return xstream.toXML(object);
+        String json = xstream.toXML(object);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Object serialized as Json: {}", json);
+        }
+        return json;
     }
 
     /**
      * Deserializes a Json string representation to an object.
-     *  
-     * @see com.elpaso.serfj.serializers.Serializer#deserialize(java.lang.String)
      */
     public Object deserialize(String jsonObject) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Deserializing Json: {}", jsonObject);
+        }
         XStream xstream = new XStream(new JettisonMappedXmlDriver());
-        return xstream.fromXML(jsonObject);
+        Object obj = xstream.fromXML(jsonObject);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Object deserialized: {}", obj);
+        }
+        return obj;
     }
 
     /**
      * Returns "application/json" content-type.
-     * 
-     * @see com.elpaso.serfj.serializers.Serializer#getContentType()
      */
     public String getContentType() {
         return "application/json";
@@ -44,8 +55,6 @@ public class JsonSerializer implements Serializer {
 
     /**
      * Returns 'json' extension.
-     * 
-     * @see com.elpaso.serfj.serializers.Serializer#getExtension()
      */
     public String getExtension() {
         return "json";

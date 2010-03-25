@@ -48,7 +48,7 @@ public final class UrlUtils {
     /**
      * Removes every character after '?'.
      *
-     * @param string - String.
+     * @param string String.
      * @return The received string or everything before a '?' character.
      */
     public String removeQueryString(String string) {
@@ -62,7 +62,7 @@ public final class UrlUtils {
     /**
      * Removes every character after '?'.
      *
-     * @param string - String.
+     * @param string String.
      * @return The received string or everything before a '?' character.
      */
     private String removeExtension(String string) {
@@ -77,7 +77,7 @@ public final class UrlUtils {
     /**
      * Removes the query string and the extension of a REST URL.
      * 
-     * @param url - URL to clean.
+     * @param url URL to clean.
      * @return a cleaned URL.<br/> 
      * <br/>
      * If came:<br/>
@@ -93,7 +93,7 @@ public final class UrlUtils {
     /**
      * Changes the first character to uppercase.
      * 
-     * @param string - String.
+     * @param string String.
      * @return Same string with first character in uppercase.
      */
     public String capitalize(String string) {
@@ -116,7 +116,7 @@ public final class UrlUtils {
     /**
      * Gets the singular of a plural.
      * 
-     * @param noun - Name.
+     * @param noun Name.
      * @return if the name was at singular, it does anything. If the name was a plural, returns its singular.
      */
     public String singularize(String noun) {
@@ -150,7 +150,7 @@ public final class UrlUtils {
     /**
      * Gets the extension used in the URL, if any.
      *
-     * @param url - An URl without query string params..
+     * @param url An URl without query string params..
      * @return an extension, or null if there isn't any.
      */
     public String getExtension(String url) {

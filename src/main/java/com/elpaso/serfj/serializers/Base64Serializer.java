@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -22,10 +21,8 @@ public class Base64Serializer implements Serializer {
     
     /**
      * Serialize object to an encoded base64 string.
-     * 
-     * @see com.elpaso.serfj.serializers.Serializer#serialize(java.io.Serializable)
      */
-    public String serialize(Serializable object) {
+    public String serialize(Object object) {
         ObjectOutputStream oos = null;
         ByteArrayOutputStream bos = null;
         try {
@@ -34,10 +31,10 @@ public class Base64Serializer implements Serializer {
             oos.writeObject(object);
             return new String(Base64.encodeBase64(bos.toByteArray()));
         } catch (IOException e) {
-            LOGGER.error("Can't deserialize data on Base 64", e);
+            LOGGER.error("Can't serialize data on Base 64", e);
             throw new IllegalArgumentException(e);
         } catch (Exception e) {
-            LOGGER.error("Can't deserialize data on Base 64", e);
+            LOGGER.error("Can't serialize data on Base 64", e);
             throw new IllegalArgumentException(e);
         } finally {
             try {
@@ -45,15 +42,13 @@ public class Base64Serializer implements Serializer {
                     bos.close();
                 }
             } catch (Exception e) {
-                LOGGER.error("Can't close ObjetInputStream used for serialize data to Base 64", e);
+                LOGGER.error("Can't close ObjetInputStream used for serialize data on Base 64", e);
             }
         }
     }
 
     /**
      * Deserialze base 64 encoded string data to Object.
-     * 
-     * @see com.elpaso.serfj.serializers.Serializer#deserialize(java.lang.String)
      */
     public Object deserialize(String data) {
         if ((data == null) || (data.length() == 0)) {

@@ -15,7 +15,7 @@ public interface BasicRestController {
      * Es la acción por defecto cuando no se pide ningún recurso en concreto.
      * HTTP_METHOD => GET
      * 
-     * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
+     * @param params Parámetros (identificadores de recursos) que venían en la URL. 
      */
     void index(ResponseHelper response, Map<String, String> params) throws IOException;
     
@@ -23,7 +23,7 @@ public interface BasicRestController {
      * Muestra los datos el recurso solicitado.
      * HTTP_METHOD => GET
      * 
-     * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
+     * @param params Parámetros (identificadores de recursos) que venían en la URL. 
      */
     void show(ResponseHelper response, Map<String, String> params) throws IOException;
 
@@ -32,7 +32,7 @@ public interface BasicRestController {
      * para crear un nuevo recurso.
      * HTTP_METHOD => GET
      * 
-     * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
+     * @param params Parámetros (identificadores de recursos) que venían en la URL. 
      */
     void newResource(ResponseHelper response, Map<String, String> params) throws IOException;
     
@@ -41,7 +41,7 @@ public interface BasicRestController {
      * para modificar un recurso concreto.
      * HTTP_METHOD => GET
      * 
-     * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
+     * @param params Parámetros (identificadores de recursos) que venían en la URL. 
      */
     void edit(ResponseHelper response, Map<String, String> params) throws IOException;
     
@@ -49,7 +49,7 @@ public interface BasicRestController {
      * Cera un nuevo recurso.
      * HTTP_METHOD => POST
      * 
-     * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
+     * @param params Parámetros (identificadores de recursos) que venían en la URL. 
      */
     void create(ResponseHelper response, Map<String, String> params) throws IOException;
     
@@ -57,7 +57,7 @@ public interface BasicRestController {
      * Modifica un recurso.
      * HTTP_METHOD => PUT
      * 
-     * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
+     * @param params Parámetros (identificadores de recursos) que venían en la URL. 
      */
     void update(ResponseHelper response, Map<String, String> params) throws IOException;
     
@@ -65,7 +65,7 @@ public interface BasicRestController {
      * Elimina un recurso.
      * HTTP_METHOD => DELETE
      * 
-     * @param params - Parámetros (identificadores de recursos) que venían en la URL. 
+     * @param params Parámetros (identificadores de recursos) que venían en la URL. 
      */
     void delete(ResponseHelper response, Map<String, String> params) throws IOException;
 }

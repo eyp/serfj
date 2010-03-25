@@ -52,7 +52,7 @@ public class SerializerFinder extends ResourceFinder {
     /**
      * Returns a extension from a content-type. If the content-type is not valid, then a null will be returned.
      *  
-     * @param contentType - A content-type. Valid content-types are:
+     * @param contentType A content-type. Valid content-types are:
      * - application/json
      * - text/xml
      * - application/octect-stream

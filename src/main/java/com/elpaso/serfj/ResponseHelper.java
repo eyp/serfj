@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.elpaso.serfj.annotations.GET;
 import com.elpaso.serfj.annotations.NotRenderPage;
 
 /**
@@ -60,7 +59,7 @@ public class ResponseHelper {
 	 * in the response and notRenderPage flag is set on, the framework will return 
 	 * a HTTP status code 204 (No content), else a page will be rendered.
 	 * 
-	 *  @param method - Method to inspect.
+	 *  @param method Method to inspect.
 	 */
 	public void notRenderPage(Method method) {
 	    this.notRenderPage = method.getAnnotation(NotRenderPage.class) != null;
@@ -78,7 +77,7 @@ public class ResponseHelper {
     /**
      * Renders some page within 'views' directory.
      *
-     * @param page - The page could have an extension or not. If it doesn't have an extension, the framework
+     * @param page The page could have an extension or not. If it doesn't have an extension, the framework
      * first looks for page.jsp, then .html or .htm extension.
      *
      * @throws IOException if the page doesn't exist.
@@ -90,8 +89,8 @@ public class ResponseHelper {
     /**
      * Renders a page from a resource.
      *
-     * @param resource - The name of the resource (bank, account, etc...). It must exists below /views directory.
-     * @param page - The page can have an extension or not. If it doesn't have an extension, the framework
+     * @param resource The name of the resource (bank, account, etc...). It must exists below /views directory.
+     * @param page The page can have an extension or not. If it doesn't have an extension, the framework
      * first looks for page.jsp, then with .html or .htm extension.
      *
      * @throws IOException if the page doesn't exist.
@@ -114,7 +113,7 @@ public class ResponseHelper {
      * Serialize an object. Serializer class used to process the object can be
      * known using ResponseHelper.getSerializer() method.
      *
-     * @param object - Object to serialize.
+     * @param object Object to serialize.
      */
     public void serialize(Object object) {
         this.object2Serialize = object;
@@ -209,7 +208,7 @@ public class ResponseHelper {
                 LOGGER.debug("Serializing using {}", urlInfo.getSerializer());
             }
             Class<?> clazz = Class.forName(urlInfo.getSerializer());
-            Method serializeMethod = clazz.getMethod("serialize", new Class[] {Serializable.class});
+            Method serializeMethod = clazz.getMethod("serialize", new Class[] {Object.class});
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Calling {}.serialize", urlInfo.getSerializer());
             }
@@ -293,7 +292,7 @@ public class ResponseHelper {
     /**
      * Checks if a given page exists in the container and could be served.
      *
-     * @param page - Page requested.
+     * @param page Page requested.
      * @return true if exists, false otherwise.
      * @throws MalformedURLException if the page's URL is not right.
      */

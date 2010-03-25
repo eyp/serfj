@@ -34,9 +34,9 @@ class ServletHelper {
     /**
      * Checks if a class method exists.
      *  
-     * @param clazz - Class.
-     * @param method - Method.
-     * @param params - Method's params.
+     * @param clazz Class.
+     * @param method Method.
+     * @param params Method's params.
      * @return the method, or null if it doesn't exist.
      */
     Method methodExists(Class<?> clazz, String method, Class<?>[] params) {
@@ -51,7 +51,7 @@ class ServletHelper {
      * Calculates the strategy controller has choice to implement REST actions. There are 3 different strategies:
      * INHERIT, INTERFACE and SIGNATURE.
      * 
-     * @param controller - Controller's class name.
+     * @param controller Controller's class name.
      * @return The strategy to follow to invoke actions on this controller.
      *  
      * @throws ClassNotFoundException if controller's class doesn't exist.
@@ -73,8 +73,8 @@ class ServletHelper {
      * Furthermore, controller's actions signatures don't have arguments. 
      *  
      * 
-     * @param urlInfo - Information of REST's URL.
-     * @param responseHelper - ResponseHelper object to inject into the controller.
+     * @param urlInfo Information of REST's URL.
+     * @param responseHelper ResponseHelper object to inject into the controller.
      * 
      * @throws ClassNotFoundException if controller's class doesn't exist.
      * @throws NoSuchMethodException if doesn't exist a method for action required in the URL.
@@ -113,8 +113,8 @@ class ServletHelper {
      * - action().
      *  
      * 
-     * @param urlInfo - Information of REST's URL.
-     * @param responseHelper - ResponseHelper object to inject into the controller.
+     * @param urlInfo Information of REST's URL.
+     * @param responseHelper ResponseHelper object to inject into the controller.
      * 
      * @throws ClassNotFoundException if controller's class doesn't exist.
      * @throws NoSuchMethodException if doesn't exist a method for action required in the URL.
@@ -171,10 +171,10 @@ class ServletHelper {
     /**
      *  Invokes a method checking previously if that method accepts requests using a particular HTTP_METHOD.
      *   
-     * @param clazz - A class.
-     * @param method - A method to invoke.
-     * @param urlInfo - URL information extracted by the framework.
-     * @param args - Arguments for the method which will be invoked.
+     * @param clazz A class.
+     * @param method A method to invoke.
+     * @param urlInfo URL information extracted by the framework.
+     * @param args Arguments for the method which will be invoked.
      * @return the object returned by the method onvoked, or null.
      * @throws IllegalArgumentException if the HTTP_METHOD that comes in the request is not accepted by
      * class's method.
@@ -194,8 +194,8 @@ class ServletHelper {
      * concrete HTTP_METHOD (GET, POST, PUT, DELETE). A method accept a particular HTTP_METHOD
      * if it's annotated with the correct annotation (@GET, @POST, @PUT, @DELETE).
      * 
-     * @param method - A class's method.
-     * @param httpMethod - HTTP_METHOD that comes in the request.
+     * @param method A class's method.
+     * @param httpMethod HTTP_METHOD that comes in the request.
      * @return <code>true</code> if the method accepts that HTTP_METHOD, <code>false</code> otherwise.
      * 
      * @throws IllegalArgumentException if HttpMethod is not supported.

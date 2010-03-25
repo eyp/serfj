@@ -48,7 +48,7 @@ public class Client {
     /**
      * Constructor.
      * 
-     * @param host - Host which will receive the calls.
+     * @param host Host which will receive the calls.
      */
     public Client(String host) {
         super();
@@ -68,8 +68,8 @@ public class Client {
     /**
      * Do a GET HTTP request to the given REST-URL.
      * 
-     * @param restUrl - REST URL.
-     * @param params - Parameters for adding to the query string.
+     * @param restUrl REST URL.
+     * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
     public Object getRequest(String restUrl, Map<String, String> params) throws IOException {
@@ -100,8 +100,8 @@ public class Client {
     /**
      * Do a POST HTTP request to the given REST-URL.
      * 
-     * @param restUrl - REST URL.
-     * @param params - Parameters for adding to the query string.
+     * @param restUrl REST URL.
+     * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
     public Object postRequest(String restUrl, Map<String, String> params) throws IOException {
@@ -111,8 +111,8 @@ public class Client {
     /**
      * Do a PUT HTTP request to the given REST-URL.
      * 
-     * @param restUrl - REST URL.
-     * @param params - Parameters for adding to the query string.
+     * @param restUrl REST URL.
+     * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
     public Object putRequest(String restUrl, Map<String, String> params) throws IOException {
@@ -122,8 +122,8 @@ public class Client {
     /**
      * Do a DELETE HTTP request to the given REST-URL.
      * 
-     * @param restUrl - REST URL.
-     * @param params - Parameters for adding to the query string.
+     * @param restUrl REST URL.
+     * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
     public Object deleteRequest(String restUrl, Map<String, String> params) throws IOException {
@@ -133,9 +133,9 @@ public class Client {
     /**
      * Do a POST HTTP request to the given REST-URL.
      * 
-     * @param httpMethod - HTTP method for this request (GET, POST, PUT, DELETE).
-     * @param restUrl - REST URL.
-     * @param params - Parameters for adding to the query string.
+     * @param httpMethod HTTP method for this request (GET, POST, PUT, DELETE).
+     * @param restUrl REST URL.
+     * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
     private Object postRequest(HttpMethod httpMethod, String restUrl, Map<String, String> params) throws IOException {
@@ -178,7 +178,9 @@ public class Client {
     }
 
     private Object readResponse(String restUrl, HttpURLConnection conn) throws IOException {
-        LOGGER.debug("Connection done. The server's response code is: {}", conn.getResponseCode());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Connection done. The server's response code is: {}", conn.getResponseCode());
+        }
         BufferedReader rd = null;
         try {
             if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -189,8 +191,15 @@ public class Client {
                 while ((line = rd.readLine()) != null) {
                     response.append(line);
                 }
-                return this.deserialize(response.toString(), UrlUtils.getInstance().getExtension(restUrl));
+                Object result = this.deserialize(response.toString(), UrlUtils.getInstance().getExtension(restUrl));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Read object in response is: {}", (result != null ? result.toString() : null));
+                }
+                return result;
             } else {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Returning a null object");
+                }
                 return null;
             }
         } catch (IOException e) {
@@ -206,8 +215,8 @@ public class Client {
     /**
      * Adds params to a query string. It will encode params' values to not get errors in the connection.
      * 
-     * @param params - Parameters and their values.
-     * @param isGet - Indicates a GET request. A GET request has to mark the first parameter with the '?' symbol.
+     * @param params Parameters and their values.
+     * @param isGet Indicates a GET request. A GET request has to mark the first parameter with the '?' symbol.
      * In a POST request it doesn't have to do it. 
      * 
      * @return a string with the parameters. This string can be appended to a query string, or written to an
@@ -242,13 +251,16 @@ public class Client {
     /**
      * Deserializes a serialized object that came within the response after a REST call.
      * 
-     * @param serializedObject - Serialized object.
-     * @param extension - URL's extension (json, 64, xml, etc...).
+     * @param serializedObject Serialized object.
+     * @param extension URL's extension (json, 64, xml, etc...).
      * @return a deserialized object.
      * 
      * @throws IOException if object can't be deserialized.
      */
     private Object deserialize(String serializedObject, String extension) throws IOException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Deserializing object {}, extension {}", serializedObject, extension);
+        }
         SerializerFinder finder = new SerializerFinder(extension);
         String serializerClass = finder.findResource(null);
         try {
@@ -262,7 +274,8 @@ public class Client {
             }
             return deserializeMethod.invoke(clazz.newInstance(), serializedObject);
         } catch (Exception e) {
-            LOGGER.error("Can't deserialize object with {} serializer: {}", serializerClass, e.getLocalizedMessage());
+            LOGGER.error(e.getLocalizedMessage(), e);
+            LOGGER.error("Can't deserialize object with {} serializer", serializerClass);
             throw new IOException(e.getLocalizedMessage());
         }
     }
