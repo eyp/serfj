@@ -7,6 +7,8 @@ package com.elpaso.serfj.client;
  */
 public class RestException extends Exception {
 
+    private static final long serialVersionUID = 5459451496102180297L;
+
     /**
      * Constructor. 
      */
