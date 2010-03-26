@@ -9,54 +9,53 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 /**
  * Default Json serializer/deserializer.
  * 
- * @author: Eduardo Yáñez
- * Date: 14-may-2009
+ * @author: Eduardo Yáñez Date: 14-may-2009
  */
 public class JsonSerializer implements Serializer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializer.class);
-    
-    /**
-     * Serializes an object to Json.
-     */
-    public String serialize(Object object) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Serializing object: {}", object);
-        }
-        XStream xstream = new XStream(new JettisonMappedXmlDriver());
-        String json = xstream.toXML(object);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Object serialized as Json: {}", json);
-        }
-        return json;
-    }
+	private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializer.class);
 
-    /**
-     * Deserializes a Json string representation to an object.
-     */
-    public Object deserialize(String jsonObject) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Deserializing Json: {}", jsonObject);
-        }
-        XStream xstream = new XStream(new JettisonMappedXmlDriver());
-        Object obj = xstream.fromXML(jsonObject);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Object deserialized: {}", obj);
-        }
-        return obj;
-    }
+	/**
+	 * Serializes an object to Json.
+	 */
+	public String serialize(Object object) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Serializing object: {}", object);
+		}
+		XStream xstream = new XStream(new JettisonMappedXmlDriver());
+		String json = xstream.toXML(object);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Object serialized as Json: {}", json);
+		}
+		return json;
+	}
 
-    /**
-     * Returns "application/json" content-type.
-     */
-    public String getContentType() {
-        return "application/json";
-    }
+	/**
+	 * Deserializes a Json string representation to an object.
+	 */
+	public Object deserialize(String jsonObject) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Deserializing Json: {}", jsonObject);
+		}
+		XStream xstream = new XStream(new JettisonMappedXmlDriver());
+		Object obj = xstream.fromXML(jsonObject);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Object deserialized: {}", obj);
+		}
+		return obj;
+	}
 
-    /**
-     * Returns 'json' extension.
-     */
-    public String getExtension() {
-        return "json";
-    }
+	/**
+	 * Returns "application/json" content-type.
+	 */
+	public String getContentType() {
+		return "application/json";
+	}
+
+	/**
+	 * Returns 'json' extension.
+	 */
+	public String getExtension() {
+		return "json";
+	}
 }

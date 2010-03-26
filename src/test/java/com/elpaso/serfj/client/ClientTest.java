@@ -12,18 +12,20 @@ import org.junit.Test;
  */
 public class ClientTest {
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+	}
 
-    /**
-     * Test method for {@link com.elpaso.serfj.client.Client#postRequest(java.lang.String, java.util.Map)}.
-     */
-    @Test
-    public void testPostRequest() {
-    }
+	/**
+	 * Test method for
+	 * {@link com.elpaso.serfj.client.Client#postRequest(java.lang.String, java.util.Map)}
+	 * .
+	 */
+	@Test
+	public void testPostRequest() {
+	}
 
 }

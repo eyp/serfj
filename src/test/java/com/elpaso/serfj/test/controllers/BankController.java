@@ -9,46 +9,45 @@ import com.elpaso.serfj.annotations.POST;
 import com.elpaso.serfj.annotations.PUT;
 
 /**
- * @author Eduardo Yáñez
- * Date: 01-may-2009
+ * @author Eduardo Yáñez Date: 01-may-2009
  */
 public class BankController extends RestAction {
-    @GET
-    public void index() {
-    }
+	@GET
+	public void index() {
+	}
 
-    @GET
-    public void show() {
+	@GET
+	public void show() {
 
-    }
+	}
 
-    @GET
-    public void newResource() {
+	@GET
+	public void newResource() {
 
-    }
+	}
 
-    @GET
-    public void edit() {
+	@GET
+	public void edit() {
 
-    }
+	}
 
-    @POST
-    public void create() {
-        
-    }
+	@POST
+	public void create() {
 
-    @PUT
-    public void update() {
+	}
 
-    }
+	@PUT
+	public void update() {
 
-    @DELETE
-    public void delete() {
-        
-    }
+	}
 
-    @POST
-    public void exceptionMethod() throws LoginException {
-        throw new LoginException("0100");
-    }
+	@DELETE
+	public void delete() {
+
+	}
+
+	@POST
+	public void exceptionMethod() throws LoginException {
+		throw new LoginException("0100");
+	}
 }
