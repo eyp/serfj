@@ -1,10 +1,10 @@
 package com.elpaso.serfj.test.account.controllers;
 
-import com.elpaso.serfj.ResponseHelper;
-import com.elpaso.serfj.annotations.GET;
-
 import java.io.IOException;
 import java.util.Map;
+
+import com.elpaso.serfj.ResponseHelper;
+import com.elpaso.serfj.annotations.GET;
 
 /**
  * @author Eduardo Yáñez

@@ -1,5 +1,7 @@
 package com.elpaso.serfj.test.controllers;
 
+import javax.security.auth.login.LoginException;
+
 import com.elpaso.serfj.RestAction;
 import com.elpaso.serfj.annotations.DELETE;
 import com.elpaso.serfj.annotations.GET;
@@ -32,7 +34,7 @@ public class BankController extends RestAction {
 
     @POST
     public void create() {
-
+        
     }
 
     @PUT
@@ -43,5 +45,10 @@ public class BankController extends RestAction {
     @DELETE
     public void delete() {
         
+    }
+
+    @POST
+    public void exceptionMethod() throws LoginException {
+        throw new LoginException("0100");
     }
 }

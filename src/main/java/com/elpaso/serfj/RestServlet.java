@@ -2,6 +2,7 @@ package com.elpaso.serfj;
 
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -112,18 +113,22 @@ public class RestServlet extends HttpServlet {
                     LOGGER.debug("Strategy: {}", strategy);
                 }
                 Object result = null;
-                switch (strategy) {
-                case INHERIT: 
-                     result = helper.inheritedStrategy(urlInfo, responseHelper);
-                	    break;
-                default:
-                	    result = helper.signatureStrategy(urlInfo, responseHelper);
-                	    break;
-                }
-                // Si hay un resultado, lo serializamos, así no lo tiene que hacer el 
-                // desarrollador en el método del controlador
-                if (result != null) {
-                    responseHelper.serialize(result);
+                try {
+                    switch (strategy) {
+                    case INHERIT: 
+                         result = helper.inheritedStrategy(urlInfo, responseHelper);
+                    	    break;
+                    default:
+                    	    result = helper.signatureStrategy(urlInfo, responseHelper);
+                    	    break;
+                    }
+                    // Si hay un resultado, lo serializamos, así no lo tiene que hacer el 
+                    // desarrollador en el método del controlador
+                    if (result != null) {
+                        responseHelper.serialize(result);
+                    }
+                } catch (InvocationTargetException e) {
+                    responseHelper.serialize(e.getTargetException());
                 }
             } else {
                 LOGGER.warn("There is not controller defined for url [{}]", urlInfo.getUrl());

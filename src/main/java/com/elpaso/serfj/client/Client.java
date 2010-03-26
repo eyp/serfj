@@ -37,7 +37,7 @@ public class Client {
     private StringBuilder urlString = new StringBuilder();
 
     //private Config config;
-    
+
     /**
      * Constructor. This constructor has to be used in case the server is in the same context as the client.
      */
@@ -58,11 +58,12 @@ public class Client {
             this.host += "/";
         }
         /*
-        try {
-            config = new Config("/config/serfj.properties");
-        } catch (ConfigFileIOException e) {
-            LOGGER.error("Can't load framework configuration", e);
-        }*/
+         * try {
+         * config = new Config("/config/serfj.properties");
+         * } catch (ConfigFileIOException e) {
+         * LOGGER.error("Can't load framework configuration", e);
+         * }
+         */
     }
 
     /**
@@ -72,7 +73,7 @@ public class Client {
      * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    public Object getRequest(String restUrl, Map<String, String> params) throws IOException {
+    public Object getRequest(String restUrl, Map<String, String> params) throws IOException, RestException {
         HttpURLConnection conn = null;
         try {
             // Make the URL
@@ -104,7 +105,7 @@ public class Client {
      * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    public Object postRequest(String restUrl, Map<String, String> params) throws IOException {
+    public Object postRequest(String restUrl, Map<String, String> params) throws IOException, RestException {
         return this.postRequest(HttpMethod.POST, restUrl, params);
     }
 
@@ -115,7 +116,7 @@ public class Client {
      * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    public Object putRequest(String restUrl, Map<String, String> params) throws IOException {
+    public Object putRequest(String restUrl, Map<String, String> params) throws IOException, RestException {
         return this.postRequest(HttpMethod.PUT, restUrl, params);
     }
 
@@ -126,7 +127,7 @@ public class Client {
      * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    public Object deleteRequest(String restUrl, Map<String, String> params) throws IOException {
+    public Object deleteRequest(String restUrl, Map<String, String> params) throws IOException, RestException {
         return this.postRequest(HttpMethod.DELETE, restUrl, params);
     }
 
@@ -138,7 +139,8 @@ public class Client {
      * @param params Parameters for adding to the query string.
      * @throws IOException if the request go bad.
      */
-    private Object postRequest(HttpMethod httpMethod, String restUrl, Map<String, String> params) throws IOException {
+    private Object postRequest(HttpMethod httpMethod, String restUrl, Map<String, String> params) 
+            throws IOException, RestException {
         HttpURLConnection conn = null;
         BufferedWriter wr = null;
         try {
@@ -177,7 +179,7 @@ public class Client {
         }
     }
 
-    private Object readResponse(String restUrl, HttpURLConnection conn) throws IOException {
+    private Object readResponse(String restUrl, HttpURLConnection conn) throws IOException, RestException {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Connection done. The server's response code is: {}", conn.getResponseCode());
         }
@@ -195,32 +197,83 @@ public class Client {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Read object in response is: {}", (result != null ? result.toString() : null));
                 }
+                if (result instanceof Exception) {
+                    throw new RestException((Exception) result);
+                }
                 return result;
+            } else if (conn.getResponseCode() == HttpURLConnection.HTTP_NO_CONTENT) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Returning a null response");
+                }
+                return null;
             } else {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Returning a null object");
                 }
+                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                }
+               if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("RESPONSE: {}", response);
+                }
                 return null;
+                /*if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Connection error, HTTP status code: {}", conn.getResponseCode());
+                }
+                ObjectInputStream or = new ObjectInputStream(conn.getErrorStream());
+                Object object = or.readObject();
+                if (object == null) {
+                    LOGGER.warn("Reading object returns null");
+                    throw new IOException("Can't get an InputStream to");
+                }
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Object ERROR: [" + object + "] of type: [" + object.getClass().getName() + "]");
+                }
+                
+                if (object instanceof Throwable) {
+                    conn.disconnect();
+                    throw new RemoteException("There was a remote exception while invoking url " + restUrl , (Throwable) object);
+                } else {
+                    conn.disconnect();
+                    LOGGER.error("Unexpected object response...");
+                    throw new IOException("Invalid Exception:" + object.getClass());
+                }*/
+/*                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Returning a null object");
+                }
+                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                }
+                Object result = this.deserialize(response.toString(), UrlUtils.getInstance().getExtension(restUrl));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Read object in response is: {}", (result != null ? result.toString() : null));
+                }*/
             }
         } catch (IOException e) {
             LOGGER.error("Request error", e);
             throw e;
-        } finally {
+        }  finally {
             if (rd != null) {
                 rd.close();
             }
         }
     }
-    
+
     /**
      * Adds params to a query string. It will encode params' values to not get errors in the connection.
      * 
      * @param params Parameters and their values.
      * @param isGet Indicates a GET request. A GET request has to mark the first parameter with the '?' symbol.
-     * In a POST request it doesn't have to do it. 
-     * 
+     *            In a POST request it doesn't have to do it.
      * @return a string with the parameters. This string can be appended to a query string, or written to an
-     * OutputStream.
+     *         OutputStream.
      */
     private String makeParamsString(Map<String, String> params, boolean isGet) {
         StringBuilder url = new StringBuilder();
@@ -247,14 +300,13 @@ public class Client {
         }
         return url.toString();
     }
-    
+
     /**
      * Deserializes a serialized object that came within the response after a REST call.
      * 
      * @param serializedObject Serialized object.
      * @param extension URL's extension (json, 64, xml, etc...).
      * @return a deserialized object.
-     * 
      * @throws IOException if object can't be deserialized.
      */
     private Object deserialize(String serializedObject, String extension) throws IOException {
@@ -268,7 +320,7 @@ public class Client {
                 LOGGER.debug("Serializing using {}", serializerClass);
             }
             Class<?> clazz = Class.forName(serializerClass);
-            Method deserializeMethod = clazz.getMethod("deserialize", new Class[] {String.class});
+            Method deserializeMethod = clazz.getMethod("deserialize", new Class[] { String.class });
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Calling {}.serialize", serializerClass);
             }
