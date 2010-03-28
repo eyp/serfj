@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.elpaso.serfj.annotations.NotRenderPage;
+import com.elpaso.serfj.annotations.DoNotRenderPage;
 
 /**
  * This class allows the developer to render the predefined page for an action,
@@ -53,7 +53,7 @@ public class ResponseHelper {
 	}
 
 	/**
-	 * If the method is annotated with {@link NotRenderPage}, marks the response
+	 * If the method is annotated with {@link DoNotRenderPage}, marks the response
 	 * as not to render any page. If there isn't object to serialize in the
 	 * response and notRenderPage flag is set on, the framework will return a
 	 * HTTP status code 204 (No content), else a page will be rendered.
@@ -62,7 +62,7 @@ public class ResponseHelper {
 	 *            Method to inspect.
 	 */
 	public void notRenderPage(Method method) {
-		this.notRenderPage = method.getAnnotation(NotRenderPage.class) != null;
+		this.notRenderPage = method.getAnnotation(DoNotRenderPage.class) != null;
 	}
 
 	/**

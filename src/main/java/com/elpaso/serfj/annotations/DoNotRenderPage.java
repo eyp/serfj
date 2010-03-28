@@ -18,5 +18,5 @@ import java.lang.annotation.RetentionPolicy;
  * @author eduardo.yanez
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NotRenderPage {
+public @interface DoNotRenderPage {
 }

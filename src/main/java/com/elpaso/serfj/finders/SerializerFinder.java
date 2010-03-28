@@ -42,7 +42,7 @@ public class SerializerFinder extends ResourceFinder {
 	}
 
 	public SerializerFinder(Config config, String extension) {
-		super(config.getString(Config.MAIN_PACKAGE), config.getString(Config.ALIAS_HELPERS_PACKAGE), (extension == null ? PAGE_EXTENSION : extension), config.getString(Config.SUFFIX_SERIALIZER), config.getString(Config.PACKAGES_STYLE));
+		super(config.getString(Config.MAIN_PACKAGE), config.getString(Config.ALIAS_SERIALIZERS_PACKAGE), (extension == null ? PAGE_EXTENSION : extension), config.getString(Config.SUFFIX_SERIALIZER), config.getString(Config.PACKAGES_STYLE));
 		contentType2Extension.put("application/json", "json");
 		contentType2Extension.put("text/xml", "xml");
 		contentType2Extension.put("application/octect-stream", "64");

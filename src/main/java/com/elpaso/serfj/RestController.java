@@ -12,13 +12,13 @@ import java.util.Map;
  * 
  * @author Eduardo Yáñez
  */
-public class RestAction {
+public class RestController {
 	private ResponseHelper response;
 
-	protected RestAction() {
+	protected RestController() {
 	}
 
-	protected RestAction(ResponseHelper response) {
+	protected RestController(ResponseHelper response) {
 		this.response = response;
 	}
 

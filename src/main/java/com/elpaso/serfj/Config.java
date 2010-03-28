@@ -32,14 +32,14 @@ public class Config extends SystemConfig {
 	public static final ConfigParam ALIAS_CONTROLLERS_PACKAGE = new ConfigParam("alias.controllers.package", "controllers");
 
 	/**
-	 * Java package where helpers for controllers will be located.
+	 * Java package where serializers for responses will be located.
 	 */
-	public static final ConfigParam ALIAS_HELPERS_PACKAGE = new ConfigParam("alias.helpers.package", "helpers");
+	public static final ConfigParam ALIAS_SERIALIZERS_PACKAGE = new ConfigParam("alias.serializers.package", "serializers");
 
 	/**
 	 * Suffix used for controller classes
 	 */
-	public static final ConfigParam SUFFIX_CONTROLLER = new ConfigParam("suffix.controllers", "Controller");
+	public static final ConfigParam SUFFIX_CONTROLLER = new ConfigParam("suffix.controllers", "OFF");
 
 	/**
 	 * Suffix used for serializer classes

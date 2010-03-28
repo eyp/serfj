@@ -4,16 +4,20 @@
 	<groupId>com.elpaso</groupId>
 	<artifactId>serfj</artifactId>
 	<version>0.3.0</version>
+	<packaging>jar</packaging>
 	<name>SerfJ</name>
 	<description>Simple Ever REST Framework for Java</description>
 	<licenses>
 		<license>
-			<name>MIT</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<name>Apache 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
 			<distribution>repo</distribution>
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
+	<scm>
+		<url>https://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
+	</scm>
 	<organization>
 		<name>ElPaso Software</name>
 		<url>http://www.elpaso-software.com</url>
@@ -120,12 +124,6 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3_min</artifactId>
-			<version>1.1.4c</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.codehaus.jettison</groupId>
 			<artifactId>jettison</artifactId>
 			<version>1.2</version>
@@ -136,12 +134,6 @@
 			<artifactId>stax</artifactId>
 			<version>1.2.0</version>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<version>2.9.1</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>httpunit</groupId>

@@ -69,7 +69,7 @@ class ServletHelper {
 			LOGGER.debug("Calculating invocation strategy");
 		}
 		Class<?> clazz = Class.forName(controller);
-		if (RestAction.class.isAssignableFrom(clazz)) {
+		if (RestController.class.isAssignableFrom(clazz)) {
 			return Strategy.INHERIT;
 		}
 		return Strategy.SIGNATURE;
@@ -77,7 +77,7 @@ class ServletHelper {
 
 	/**
 	 * Invokes URL's action using INHERIT strategy. It means that controller
-	 * inherits from {@link RestAction}, so the framework will inject
+	 * inherits from {@link RestController}, so the framework will inject
 	 * {@link ResponseHelper} to controller by RestAction.setResposeHelper
 	 * method. Furthermore, controller's actions signatures don't have
 	 * arguments.
