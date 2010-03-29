@@ -120,8 +120,7 @@ public class RestServlet extends HttpServlet {
 						result = helper.signatureStrategy(urlInfo, responseHelper);
 						break;
 					}
-					// Si hay un resultado, lo serializamos, así no lo tiene que
-					// hacer el
+					// Si hay un resultado, lo serializamos, así no lo tiene que hacer el
 					// desarrollador en el método del controlador
 					if (result != null) {
 						responseHelper.serialize(result);
