@@ -9,7 +9,7 @@ import com.elpaso.serfj.annotations.GET;
 /**
  * @author Eduardo Yáñez Date: 01-may-2009
  */
-public class AccountController {
+public class Account {
 	@GET
 	public void index(ResponseHelper response, Map<String, String> params) throws IOException {
 	}

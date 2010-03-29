@@ -1,4 +1,4 @@
-package com.elpaso.serfj.test.helpers;
+package com.elpaso.serfj.test.serializers;
 
 /**
  * @author: Eduardo Yáñez Date: 09-may-2009

@@ -22,7 +22,8 @@ import java.util.Map;
  * 
  * that will be used if there aren't any serializers found for a resource.
  * 
- * @author: Eduardo Yáñez Date: 08-may-2009
+ * @author: Eduardo Yáñez 
+ * Date: 08-may-2009
  */
 public class SerializerFinder extends ResourceFinder {
 
@@ -36,18 +37,22 @@ public class SerializerFinder extends ResourceFinder {
 
 	public SerializerFinder(String extension) {
 		super(null, null, (extension == null ? PAGE_EXTENSION : extension), OFF_OPTION, null);
-		contentType2Extension.put("application/json", "json");
-		contentType2Extension.put("text/xml", "xml");
-		contentType2Extension.put("application/octect-stream", "64");
+		this.initExtensionsCache();
 	}
 
 	public SerializerFinder(Config config, String extension) {
-		super(config.getString(Config.MAIN_PACKAGE), config.getString(Config.ALIAS_SERIALIZERS_PACKAGE), (extension == null ? PAGE_EXTENSION : extension), config.getString(Config.SUFFIX_SERIALIZER), config.getString(Config.PACKAGES_STYLE));
-		contentType2Extension.put("application/json", "json");
-		contentType2Extension.put("text/xml", "xml");
-		contentType2Extension.put("application/octect-stream", "64");
+		super(config.getString(Config.MAIN_PACKAGE), config.getString(Config.ALIAS_SERIALIZERS_PACKAGE), 
+		        (extension == null ? PAGE_EXTENSION : extension), config.getString(Config.SUFFIX_SERIALIZER), 
+		        config.getString(Config.PACKAGES_STYLE));
+        this.initExtensionsCache();
 	}
 
+	private void initExtensionsCache() {
+        contentType2Extension.put("application/json", "json");
+        contentType2Extension.put("text/xml", "xml");
+        contentType2Extension.put("application/octect-stream", "64");
+	}
+	
 	/**
 	 * Returns a extension from a content-type. If the content-type is not
 	 * valid, then a null will be returned.
@@ -66,13 +71,16 @@ public class SerializerFinder extends ResourceFinder {
 	protected String defaultResource(String model) {
 		String serializer = super.defaultResource(model);
 		if (serializer == null && isDefaultImplementation()) {
-			serializer = MessageFormat.format("{0}.{1}Serializer", DEFAULT_SERIALIZERS_PACKAGE, this.getUtils().capitalize(this.getPrefix()));
+			serializer = MessageFormat.format("{0}.{1}Serializer", DEFAULT_SERIALIZERS_PACKAGE, 
+			        this.getUtils().capitalize(this.getPrefix()));
 		}
 		return serializer;
 	}
 
 	private Boolean isDefaultImplementation() {
-		if (JSON_EXTENSION.equals(this.getPrefix().toLowerCase()) || B64_EXTENSION.equals(this.getPrefix().toLowerCase()) || XML_EXTENSION.equals(this.getPrefix().toLowerCase())) {
+		if (JSON_EXTENSION.equals(this.getPrefix().toLowerCase()) 
+		        || B64_EXTENSION.equals(this.getPrefix().toLowerCase()) 
+		        || XML_EXTENSION.equals(this.getPrefix().toLowerCase())) {
 			return true;
 		}
 		return false;

@@ -11,7 +11,7 @@ import com.elpaso.serfj.annotations.PUT;
 /**
  * @author Eduardo Yáñez Date: 01-may-2009
  */
-public class BankController extends RestController {
+public class Bank extends RestController {
 	@GET
 	public void index() {
 	}

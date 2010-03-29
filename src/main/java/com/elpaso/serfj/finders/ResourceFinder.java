@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory;
 /**
  * TODO Javadoc
  * 
- * @author: Eduardo Yáñez Date: 08-may-2009
+ * @author: Eduardo Yáñez 
+ * Date: 08-may-2009
  */
 public class ResourceFinder {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceFinder.class);
@@ -124,7 +125,8 @@ public class ResourceFinder {
 	}
 
 	protected String findByFunctionAndModel(String model) {
-		String clazz = MessageFormat.format("{0}.{1}.{2}.{3}", mainPackage, utils.singularize(model), alias, this.makeClassName(model));
+		String clazz = MessageFormat.format("{0}.{1}.{2}.{3}", mainPackage, utils.singularize(model), 
+		        alias, this.makeClassName(model));
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Searching resource [{}] by FUNCTIONAL BY MODEL style", clazz);
 		}
@@ -146,7 +148,8 @@ public class ResourceFinder {
 	}
 
 	protected String makeClassName(String model) {
-		String clazz = MessageFormat.format("{0}{1}{2}", utils.capitalize(prefix), utils.capitalize(utils.singularize(model)), utils.capitalize(suffix));
+		String clazz = MessageFormat.format("{0}{1}{2}", utils.capitalize(prefix), 
+		        utils.capitalize(utils.singularize(model)), utils.capitalize(suffix));
 		return clazz;
 	}
 
