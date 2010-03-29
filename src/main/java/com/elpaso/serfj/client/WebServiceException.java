@@ -19,8 +19,10 @@ public class WebServiceException extends Exception {
 	/**
 	 * Constructor.
 	 * 
-	 * @param message
-	 * @param cause
+	 * @param message 
+	 *         Exception message.
+	 * @param cause 
+	 *         An exception.
 	 */
 	public WebServiceException(String message, Throwable cause) {
 		super(message, cause);
@@ -29,7 +31,8 @@ public class WebServiceException extends Exception {
 	/**
 	 * Constructor.
 	 * 
-	 * @param message
+	 * @param message 
+	 *         Exception message.
 	 */
 	public WebServiceException(String message) {
 		super(message);
@@ -39,6 +42,7 @@ public class WebServiceException extends Exception {
 	 * Constructor.
 	 * 
 	 * @param cause
+	 *         An exception.
 	 */
 	public WebServiceException(Throwable cause) {
 		super(cause);
