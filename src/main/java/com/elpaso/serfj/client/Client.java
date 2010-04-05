@@ -198,17 +198,22 @@ public class Client {
 			InputStream is = null;
 			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Reading a normal ({}) response", HttpURLConnection.HTTP_OK);
+					LOGGER.debug("Reading an OK ({}) response", HttpURLConnection.HTTP_OK);
 				}
 				is = conn.getInputStream();
-			} else if (conn.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Reading an error ({}) response", HttpURLConnection.HTTP_INTERNAL_ERROR);
-				}
-				is = conn.getErrorStream();
+            } else if (conn.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Reading an Error ({}) response", conn.getResponseCode());
+                }
+                is = conn.getErrorStream();
+            } else if (conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Reading a Not Found ({}) response", conn.getResponseCode());
+                }
+                throw new WebServiceException("Page or Resource Not Found", conn.getResponseCode());
 			} else if (conn.getResponseCode() == HttpURLConnection.HTTP_NO_CONTENT) {
 				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Returning a null ({}) response", HttpURLConnection.HTTP_NO_CONTENT);
+					LOGGER.debug("Returning a No Content (null) ({}) response", HttpURLConnection.HTTP_NO_CONTENT);
 				}
 				return null;
 			}
