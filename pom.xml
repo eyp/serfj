@@ -7,6 +7,7 @@
 	<packaging>jar</packaging>
 	<name>SerfJ</name>
 	<description>Simple Ever REST Framework for Java</description>
+	<url>http://serfj.elpaso-software.com</url>
 	<licenses>
 		<license>
 			<name>Apache 2.0</name>
@@ -27,7 +28,7 @@
 		<developer>
 			<id>eyp</id>
 			<name>Eduardo Yáñez Parareda</name>
-			<email>eduardo.yanez@gmali.com</email>
+			<email>eduardo.yanez@gmail.com</email>
 			<url></url>
 			<roles>
 				<role>architect</role>
