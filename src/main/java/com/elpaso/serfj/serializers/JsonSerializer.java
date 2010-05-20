@@ -20,12 +20,12 @@ public class JsonSerializer implements Serializer {
 	 */
 	public String serialize(Object object) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Serializing object: {}", object);
+			LOGGER.debug("Serializing object to Json");
 		}
 		XStream xstream = new XStream(new JettisonMappedXmlDriver());
 		String json = xstream.toXML(object);
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Object serialized as Json: {}", json);
+			LOGGER.debug("Object serialized well");
 		}
 		return json;
 	}
@@ -35,12 +35,12 @@ public class JsonSerializer implements Serializer {
 	 */
 	public Object deserialize(String jsonObject) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Deserializing Json: {}", jsonObject);
+			LOGGER.debug("Deserializing Json object");
 		}
 		XStream xstream = new XStream(new JettisonMappedXmlDriver());
 		Object obj = xstream.fromXML(jsonObject);
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Object deserialized: {}", obj);
+			LOGGER.debug("Object deserialized");
 		}
 		return obj;
 	}
