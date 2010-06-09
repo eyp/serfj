@@ -26,13 +26,29 @@ public class RestController {
 		this.response = response;
 	}
 
+    /**
+     * Gets a Map containing all the parameters in the query string, and all the
+     * attributes in the request.
+     */
 	protected Map<String, Object> getParams() {
 		return this.response.getParams();
 	}
 
-	protected Object getParam(String name) {
-		return this.response.getParam(name);
-	}
+    /**
+     * Gets a the value of a parameter that came in the URL or in the request.
+     */
+    protected Object getParam(String name) {
+        return this.response.getParam(name);
+    }
+
+    /**
+     * Adds an object to the request. If a page will be renderer and it needs some objects
+     * to work, with this method a developer can add objects to the request, so the page can
+     * obtain them.
+     */
+    protected void addObject2Request(String name, Object object) {
+        this.response.addObject2Request(name, object);
+    }
 
 	/**
 	 * Returns parameter's value that is a String.

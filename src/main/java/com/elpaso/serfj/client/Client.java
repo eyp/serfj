@@ -77,7 +77,9 @@ public class Client {
 			// Make the URL
 			urlString = new StringBuilder(this.host).append(restUrl);
 			urlString.append(this.makeParamsString(params, true));
-			LOGGER.debug("Doing HTTP request: GET [{}]", urlString.toString());
+			if (LOGGER.isDebugEnabled()) {
+			    LOGGER.debug("Doing HTTP request: GET [{}]", urlString.toString());
+			}
 			// Connection configuration
 			URL url = new URL(urlString.toString());
 			conn = (HttpURLConnection) url.openConnection();
@@ -156,7 +158,9 @@ public class Client {
 		try {
 			// Make the URL
 			urlString = new StringBuilder(this.host).append(restUrl);
-			LOGGER.debug("Doing HTTP request: POST [{}]", urlString.toString());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Doing HTTP request: POST [{}]", urlString.toString());
+            }
 			// Connection configuration
 			URL url = new URL(urlString.toString());
 			conn = (HttpURLConnection) url.openConnection();
@@ -297,7 +301,7 @@ public class Client {
 	 */
 	private Object deserialize(String serializedObject, String extension) throws IOException {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Deserializing object {}, extension {}", serializedObject, extension);
+			LOGGER.debug("Deserializing object to {}", extension);
 		}
 		SerializerFinder finder = new SerializerFinder(extension);
 		String serializerClass = finder.findResource(null);
