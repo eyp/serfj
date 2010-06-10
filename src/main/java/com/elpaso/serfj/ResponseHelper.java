@@ -53,6 +53,13 @@ public class ResponseHelper {
 	}
 
 	/**
+	 * Gets {@link HttpServletRequest} object related to this request.
+	 */
+	HttpServletRequest getRequest() {
+	    return this.request;
+	}
+	
+	/**
 	 * If the method is annotated with {@link DoNotRenderPage}, marks the response
 	 * as not to render any page. If there isn't object to serialize in the
 	 * response and notRenderPage flag is set on, the framework will return a
@@ -162,15 +169,6 @@ public class ResponseHelper {
      */
     public Object getParam(String name) {
         return this.params.get(name);
-    }
-
-    /**
-     * Adds an object to the request. If a page will be renderer and it needs some objects
-     * to work, with this method a developer can add objects to the request, so the page can
-     * obtain them.
-     */
-    public void addObject2Request(String name, Object object) {
-        this.request.setAttribute(name, object);
     }
 
 	/**

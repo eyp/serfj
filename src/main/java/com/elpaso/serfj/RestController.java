@@ -47,9 +47,16 @@ public class RestController {
      * obtain them.
      */
     protected void addObject2Request(String name, Object object) {
-        this.response.addObject2Request(name, object);
+        this.response.getRequest().setAttribute(name, object);
     }
 
+    /**
+     * Returns the remote address with including protocol. For example: http://192.168.12.10
+     */
+    protected String getRemoteAddress() {
+        return this.response.getRequest().getScheme() + "://" + this.response.getRequest().getRemoteAddr();
+    }
+    
 	/**
 	 * Returns parameter's value that is a String.
 	 * 
