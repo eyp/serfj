@@ -7,7 +7,7 @@
   <display-name>serfj-sample</display-name>
   <servlet>
       <servlet-name>RestServlet</servlet-name>
-      <servlet-class>com.elpaso.serfj.RestServlet</servlet-class>
+      <servlet-class>net.sf.serfj.RestServlet</servlet-class>
       <load-on-startup>5</load-on-startup>
   </servlet>
 
