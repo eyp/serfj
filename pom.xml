@@ -8,6 +8,7 @@
 	<name>SerfJ</name>
 	<description>Simple Ever REST Framework for Java</description>
 	<url>http://serfj.elpaso-software.com</url>
+	
 	<licenses>
 		<license>
 			<name>Apache 2.0</name>
@@ -16,9 +17,11 @@
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
+	
 	<scm>
 		<url>https://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
 	</scm>
+	
 	<organization>
 		<name>ElPaso Software</name>
 		<url>http://www.elpaso-software.com</url>
@@ -44,6 +47,36 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+    
+    <profiles>
+      <profile>
+        <id>release-sign-artifacts</id>
+        <activation>
+          <property>
+            <name>performRelease</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <build>
+          <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+          </plugins>
+        </build>
+      </profile>
+    </profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -58,7 +91,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.1</version>
+				<version>2.1.2</version>
 				<configuration />
 			</plugin>
 			<plugin>
@@ -80,29 +113,15 @@
                     </additionalparam>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
   	        <plugin>
 	           <groupId>org.apache.maven.plugins</groupId>
 	           <artifactId>maven-repository-plugin</artifactId>
-	           <version>2.1</version>
-	           <configuration>
-	               <!-- your example configuration here -->
-	           </configuration>
+	           <version>2.2</version>
+	           <configuration/>
 	         </plugin>
         </plugins>
 	</build>
+	
 	<reporting>
 		<plugins>
 			<plugin>
@@ -112,6 +131,7 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.elpaso</groupId>
