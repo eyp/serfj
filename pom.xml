@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf</groupId>
 	<artifactId>serfj</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>SerfJ</name>
 	<description>Simple Ever REST Framework for Java</description>
@@ -25,9 +25,9 @@
 	</licenses>
 	
 	<scm>
-		<url>http://serfj.svn.sourceforge.net/svnroot/serfj/tags/R20100713-0.3.0</url>
-        <connection>scm:svn:http://serfj.svn.sourceforge.net/svnroot/serfj/tags/R20100713-0.3.0</connection>
-        <developerConnection>scm:svn:https://serfj.svn.sourceforge.net/svnroot/serfj/tags/R20100713-0.3.0</developerConnection>
+		<url>http://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
+        <connection>scm:svn:http://serfj.svn.sourceforge.net/svnroot/serfj</connection>
+        <developerConnection>scm:svn:https://serfj.svn.sourceforge.net/svnroot/serfj</developerConnection>
 	</scm>
 	
 	<organization>
