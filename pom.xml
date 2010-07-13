@@ -143,11 +143,6 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.elpaso</groupId>
-			<artifactId>elpaso-config</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>0.9.19</version>

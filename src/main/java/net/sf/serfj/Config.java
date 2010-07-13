@@ -1,8 +1,8 @@
 package net.sf.serfj;
 
-import com.elpaso.config.ConfigFileIOException;
-import com.elpaso.config.ConfigParam;
-import com.elpaso.config.SystemConfig;
+import net.sf.serfj.config.ConfigFileIOException;
+import net.sf.serfj.config.ConfigParam;
+import net.sf.serfj.config.SystemConfig;
 
 /**
  * Framework configuration.

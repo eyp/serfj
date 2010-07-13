@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.serfj.config.ConfigFileIOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.elpaso.config.ConfigFileIOException;
 
 /**
  * Main class. This servlet dispatches REST requests to controllers. It parses
