@@ -9,7 +9,14 @@
 	<description>Simple Ever REST Framework for Java</description>
 	<url>http://serfj.elpaso-software.com</url>
 	
-	<licenses>
+	<!-- This is for using Sonatype submit process to Maven Central -->
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>3</version>
+    </parent>
+  
+  	<licenses>
 		<license>
 			<name>Apache 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
@@ -19,7 +26,9 @@
 	</licenses>
 	
 	<scm>
-		<url>https://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
+		<url>http://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
+        <connection>scm:svn:http://serfj.svn.sourceforge.net/svnroot/serfj</connection>
+        <developerConnection>scm:svn:https://serfj.svn.sourceforge.net/svnroot/serfj</developerConnection>
 	</scm>
 	
 	<organization>
