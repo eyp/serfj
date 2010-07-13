@@ -122,12 +122,20 @@
                     </additionalparam>
 				</configuration>
 			</plugin>
-  	        <plugin>
-	           <groupId>org.apache.maven.plugins</groupId>
-	           <artifactId>maven-repository-plugin</artifactId>
-	           <version>2.2</version>
-	           <configuration/>
-	         </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-repository-plugin</artifactId>
+               <version>2.2</version>
+               <configuration/>
+             </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-release-plugin</artifactId>
+               <version>2.0</version>
+               <configuration>
+                   <releaseProfiles>release-sign-artifacts</releaseProfiles>
+               </configuration>
+             </plugin>
         </plugins>
 	</build>
 	
