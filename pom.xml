@@ -135,7 +135,14 @@
                    <releaseProfiles>release-sign-artifacts</releaseProfiles>
                </configuration>
              </plugin>
-        </plugins>
+             <plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-5</version>
+				<configuration>
+				    <descriptor>src/main/assembly/assembly-zip.xml</descriptor>
+                </configuration>
+             </plugin>
+          </plugins>
 	</build>
 	
 	<reporting>
