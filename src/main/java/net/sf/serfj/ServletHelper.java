@@ -33,8 +33,6 @@ import org.slf4j.LoggerFactory;
  * actions on controllers.
  * 
  * @author Eduardo Yáñez
- * 
- *         Mar 13, 2010
  */
 class ServletHelper {
 
@@ -71,7 +69,7 @@ class ServletHelper {
 
 	/**
 	 * Calculates the strategy controller has choice to implement REST actions.
-	 * There are 3 different strategies: INHERIT, INTERFACE and SIGNATURE.
+	 * There are 3 different strategies: INHERIT, SIGNATURE and INJECTION.
 	 * 
 	 * @param controller
 	 *            Controller's class name.

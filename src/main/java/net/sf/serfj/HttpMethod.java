@@ -18,7 +18,7 @@ package net.sf.serfj;
 /**
  * Represents the possible HTTP request methods.
  * 
- * @author: Eduardo Yáñez Date: 10-may-2009
+ * @author: Eduardo Yáñez
  */
 public enum HttpMethod {
 	GET, POST, PUT, DELETE;

@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * provide the resource's name (plural) and the action if anyone wants to be
  * invocated.
  * 
- * @author eduardo.yanez
+ * @author Eduardo Yáñez
  */
 public class Client {
 

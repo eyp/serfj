@@ -39,7 +39,6 @@ import net.sf.serfj.Config;
  * that will be used if there aren't any serializers found for a resource.
  * 
  * @author: Eduardo Yáñez 
- * Date: 08-may-2009
  */
 public class SerializerFinder extends ResourceFinder {
 

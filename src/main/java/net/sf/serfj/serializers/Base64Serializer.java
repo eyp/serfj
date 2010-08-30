@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Default base64 serializer/deserializer.
  * 
- * @author eduardo.yanez
+ * @author Eduardo Yáñez
  */
 public class Base64Serializer implements Serializer {
 

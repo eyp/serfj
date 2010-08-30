@@ -30,7 +30,7 @@ import java.lang.annotation.RetentionPolicy;
  * DoNotRenderPage, the framework will return a HTTP status code 204 (No content),
  * if it isn't annotated, the framework will search for a page to render.
  * 
- * @author eduardo.yanez
+ * @author Eduardo Yáñez
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DoNotRenderPage {

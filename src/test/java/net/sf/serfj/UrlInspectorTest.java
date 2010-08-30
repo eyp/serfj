@@ -25,7 +25,6 @@ import org.junit.Before;
 
 /**
  * @author Eduardo Yáñez 
- * Date: 01-may-2009
  */
 public class UrlInspectorTest extends TestCase {
 	private UrlInspector inspector;

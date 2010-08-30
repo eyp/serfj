@@ -19,7 +19,7 @@ package net.sf.serfj.config;
  * Clase en la que se definen los diferentes parametros de configuracion que se van a utilizar en el cliente, y los que
  * son comunes a los dos.
  * 
- * @author Eduardo
+ * @author Eduardo Yáñez
  */
 public class ConfigParam {
 

@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Annotation used to mark a resource method that responds to HTTP PUT requests.
  * 
- * @author eduardo.yanez
+ * @author Eduardo Yáñez
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PUT {

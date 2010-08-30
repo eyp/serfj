@@ -18,8 +18,18 @@ package net.sf.serfj.finders;
 import net.sf.serfj.Config;
 
 /**
+ * This class is used to find a controller. It depends on how is configured the framework.
+ * If there is no configuration for controllers, it uses default values.<br><br>
+ * 
+ * The minimal configuration is the <em>main.package</em> property, which is the root to look for controllers.<br>
+ * Other configuration properties are:<br>
+ * <ul>
+ *   <li>alias.controller.package: It's an alias to append to <em>main.package</em> property.</li>
+ *   <li>suffix.controllers: It's the suffix that controllers' classes have.</li>
+ *   <li>packages.style: It's the strategy used to search for controllers.</li>
+ * </ul>
+ * 
  * @author: Eduardo Yáñez 
- * Date: 08-may-2009
  */
 public class ControllerFinder extends ResourceFinder {
 

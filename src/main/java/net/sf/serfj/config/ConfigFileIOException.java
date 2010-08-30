@@ -18,13 +18,10 @@ package net.sf.serfj.config;
 /**
  * Configuration file not found or can't read it.
  * 
- * @author eduardo.yanez
+ * @author Eduardo Yáñez
  */
 public class ConfigFileIOException extends Exception {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 9197319082561488840L;
 
     /**

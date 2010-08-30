@@ -24,10 +24,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TODO Javadoc
+ * This class is used to find some classes like controllers or serializers. 
+ * It depends on how is configured the framework. If there is no configuration, it uses default values.<br><br>
+ * 
+ * The minimal configuration is the <em>main.package</em> property, which is the root to look for controllers and serializers.<br>
+ * Other configuration properties are:<br>
+ * <ul>
+ *   <li>packages.style: It's the strategy used to search for controllers or serializers.</li>
+ *   <li>alias.controllers.package: It's an alias to append to <em>main.package</em> property.</li>
+ *   <li>suffix.controllers: It's the suffix that controllers' classes have.</li>
+ *   <li>alias.serializers.package: It's an alias to append to <em>main.package</em> property.</li>
+ *   <li>suffix.serializers: It's the suffix that serializers' classes have.</li>
+ * </ul>
  * 
  * @author: Eduardo Yáñez 
- * Date: 08-may-2009
  */
 public class ResourceFinder {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceFinder.class);
@@ -85,8 +95,7 @@ public class ResourceFinder {
 		} else if (MODEL_STYLE.equals(style)) {
 			clazz = findByModel(model);
 		} else {
-			// Style wasn't defined, so we search the class first as Functional
-			// style,
+			// Style wasn't defined, so we search the class first as Functional style,
 			// then as Functional by Resource style, and last by Resource
 			clazz = findByFunction(model);
 			if (clazz == null) {

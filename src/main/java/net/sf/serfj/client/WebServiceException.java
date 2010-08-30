@@ -18,7 +18,7 @@ package net.sf.serfj.client;
 /**
  * Exception that encapsulates exceptions thrown by controller's methods.
  * 
- * @author eduardo.yanez
+ * @author Eduardo Yáñez
  */
 public class WebServiceException extends Exception {
 

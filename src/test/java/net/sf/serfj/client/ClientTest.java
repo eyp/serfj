@@ -25,7 +25,6 @@ import org.junit.Test;
 /**
  * Tests for {@link Client} class.
  * 
- * @author eduardo.yanez
  */
 public class ClientTest {
 

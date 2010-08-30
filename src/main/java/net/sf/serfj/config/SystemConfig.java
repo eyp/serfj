@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Lee la configuración de un sistema.
  * 
- * @author eduardo.yanez
+ * @author Eduardo Yáñez
  */
 public class SystemConfig {
 

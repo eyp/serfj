@@ -22,7 +22,7 @@ import java.util.Map;
  * Represents all the information extracted from an URL. The main Identifier,
  * controller, secondary identifiers, serializer, etc...
  * 
- * @author: Eduardo Yáñez Date: 10-may-2009
+ * @author: Eduardo Yáñez
  */
 class UrlInfo {
 	private String url;

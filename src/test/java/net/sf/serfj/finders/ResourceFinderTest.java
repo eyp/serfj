@@ -22,7 +22,6 @@ import org.junit.Test;
 
 /**
  * @author: Eduardo Yáñez 
- * Date: 09-may-2009
  */
 public class ResourceFinderTest extends TestCase {
 	@Test

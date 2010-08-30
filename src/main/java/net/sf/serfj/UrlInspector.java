@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Eduardo Yáñez Date: 01-may-2009
+ * @author Eduardo Yáñez
  */
 class UrlInspector {
 	/**

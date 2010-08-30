@@ -22,7 +22,6 @@ import org.junit.Before;
 
 /**
  * @author Eduardo Yáñez
- * 
  */
 public class UrlUtilsTest extends TestCase {
 

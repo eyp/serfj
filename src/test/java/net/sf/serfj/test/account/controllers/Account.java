@@ -23,7 +23,7 @@ import net.sf.serfj.annotations.GET;
 
 
 /**
- * @author Eduardo Yáñez Date: 01-may-2009
+ * @author Eduardo Yáñez
  */
 public class Account {
 	@GET

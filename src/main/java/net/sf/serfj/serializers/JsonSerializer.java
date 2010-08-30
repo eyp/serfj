@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 /**
  * Default Json serializer/deserializer.
  * 
- * @author: Eduardo Yáñez Date: 14-may-2009
+ * @author: Eduardo Yáñez
  */
 public class JsonSerializer implements Serializer {
 

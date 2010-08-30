@@ -25,7 +25,7 @@ import net.sf.serfj.annotations.PUT;
 
 
 /**
- * @author Eduardo Yáñez Date: 01-may-2009
+ * @author Eduardo Yáñez
  */
 public class Bank extends RestController {
 	@GET
