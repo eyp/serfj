@@ -82,9 +82,25 @@ public class RestController {
 		return (String) this.response.getParam(name);
 	}
 
-	protected String getId(String resource) {
-		return this.response.getId(resource);
-	}
+    /**
+     * Gets the value of an Id for the current resource.<br><br>
+     * 
+     * /sessions/1 -> Id: 1, identifier of 'session'<br>
+     * /sessions/1/users/2 -> Id: 2, identifier of 'users'<br>
+     */
+    protected String getId() {
+        return this.getId(this.response.getId());
+    }
+
+    /**
+     * Gets the value of an Id given its resource's name.<br><br>
+     * 
+     * /sessions/1 -> Id: 1, Resource: session<br>
+     * /sessions/1/users/2 -> Id: 2, Resource: user<br>
+     */
+    protected String getId(String resource) {
+        return this.response.getId(resource);
+    }
 
 	/**
 	 * Renders the predefined page.

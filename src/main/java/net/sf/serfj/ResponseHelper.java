@@ -187,15 +187,25 @@ public class ResponseHelper {
         return this.params.get(name);
     }
 
-	/**
-	 * Gets a the value of an Id given its resource's name.<br><br>
-	 * 
-	 * /sessions/1 -> Id: 1, Resource: session<br>
-	 * /sessions/1/users/2 -> Id: 2, Resource: user<br>
-	 */
-	public String getId(String resource) {
-		return this.urlInfo.getId(resource);
-	}
+    /**
+     * Gets the value of an Id for the current resource.<br><br>
+     * 
+     * /sessions/1 -> Id: 1, identifier of 'session'<br>
+     * /sessions/1/users/2 -> Id: 2, identifier of 'users'<br>
+     */
+    public String getId() {
+        return this.urlInfo.getId();
+    }
+
+    /**
+     * Gets the value of an Id given its resource's name.<br><br>
+     * 
+     * /sessions/1 -> Id: 1, Resource: session<br>
+     * /sessions/1/users/2 -> Id: 2, Resource: user<br>
+     */
+    public String getId(String resource) {
+        return this.urlInfo.getId(resource);
+    }
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> initParams() {
