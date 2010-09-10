@@ -19,6 +19,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+
 import net.sf.serfj.annotations.DELETE;
 import net.sf.serfj.annotations.GET;
 import net.sf.serfj.annotations.POST;
@@ -34,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Eduardo Yáñez
  */
-class ServletHelper {
+public class ServletHelper {
 
 	/**
 	 * Log.
@@ -44,10 +46,64 @@ class ServletHelper {
 	/**
 	 * Strategy to invoke action on the controller.
 	 */
-	enum Strategy {
+	private enum Strategy {
 		INHERIT, INTERFACE, SIGNATURE
 	};
 
+	/**
+	 * Calls the controller that must answers the request whose information is in
+	 * <code>urlInfo</code>. This method calculates the strategy used to write the
+	 * controller, then calls the controller and finally if there was any object 
+	 * returned by the controller's action, this method store that object into
+	 * <code>responseHelper</code>.  
+	 * 
+	 * @param urlInfo
+	 *             Information extracted from the request URL.
+	 * @param responseHelper
+	 *             ResponseHelper object used in this transaction.
+	 * @throws ServletException
+	 *             If something went wrong in the communication.
+	 */
+	void invokeAction(UrlInfo urlInfo, ResponseHelper responseHelper) throws ServletException {
+        try {
+            // May be there isn't any controller, so the page will be rendered
+            // without calling any action
+            if (urlInfo.getController() != null) {
+                Strategy strategy = calculateStrategy(urlInfo.getController());
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Strategy: {}", strategy);
+                }
+                Object result = null;
+                try {
+                    switch (strategy) {
+                    case INHERIT:
+                        result = inheritedStrategy(urlInfo, responseHelper);
+                        break;
+                    default:
+                        result = signatureStrategy(urlInfo, responseHelper);
+                        break;
+                    }
+                    // Si hay un resultado, lo serializamos, así no lo tiene que hacer el
+                    // desarrollador en el método del controlador
+                    if (result != null) {
+                        responseHelper.serialize(result);
+                    }
+                } catch (InvocationTargetException e) {
+                    responseHelper.serialize(e.getTargetException());
+                }
+            } else {
+                LOGGER.warn("There is not controller defined for url [{}]", urlInfo.getUrl());
+            }
+        } catch (ClassNotFoundException e) {
+            LOGGER.warn(e.getLocalizedMessage(), e);
+        } catch (NoSuchMethodException e) {
+            LOGGER.warn("NoSuchMethodException {}", e.getLocalizedMessage());
+        } catch (Exception e) {
+            LOGGER.warn(e.getLocalizedMessage(), e);
+            throw new ServletException(e);
+        }
+	}
+	
 	/**
 	 * Checks if a class method exists.
 	 * 
@@ -59,7 +115,7 @@ class ServletHelper {
 	 *            Method's params.
 	 * @return the method, or null if it doesn't exist.
 	 */
-	Method methodExists(Class<?> clazz, String method, Class<?>[] params) {
+	private Method methodExists(Class<?> clazz, String method, Class<?>[] params) {
 		try {
 			return clazz.getMethod(method, params);
 		} catch (NoSuchMethodException e) {
@@ -78,7 +134,7 @@ class ServletHelper {
 	 * @throws ClassNotFoundException
 	 *             if controller's class doesn't exist.
 	 */
-	Strategy calculateStrategy(String controller) throws ClassNotFoundException {
+	private Strategy calculateStrategy(String controller) throws ClassNotFoundException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Calculating invocation strategy");
 		}
@@ -115,7 +171,7 @@ class ServletHelper {
 	 * @throws InstantiationException
 	 *             if it isn't possible to instantiate the controller.
 	 */
-	Object inheritedStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
+	private Object inheritedStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
 	        InvocationTargetException, InstantiationException {
 		Class<?> clazz = Class.forName(urlInfo.getController());
 		Method setResponseHelper = clazz.getMethod("setResponseHelper", new Class<?>[] { ResponseHelper.class });
@@ -132,7 +188,7 @@ class ServletHelper {
 			LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
 		}
 		responseHelper.notRenderPage(action);
-		return this.invoke(controllerInstance, action, urlInfo);
+		return this.invokeAction(controllerInstance, action, urlInfo);
 	}
 
 	/**
@@ -162,7 +218,7 @@ class ServletHelper {
 	 * @throws InstantiationException
 	 *             if it isn't possible to instantiate the controller.
 	 */
-	Object signatureStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException,
+	private Object signatureStrategy(UrlInfo urlInfo, ResponseHelper responseHelper) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException,
 	        InstantiationException, NoSuchMethodException {
 		Class<?> clazz = Class.forName(urlInfo.getController());
 		Object result = null;
@@ -173,7 +229,7 @@ class ServletHelper {
 				LOGGER.debug("Calling {}.{}(ResponseHelper, Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
 			}
 			responseHelper.notRenderPage(method);
-			result = this.invoke(clazz.newInstance(), method, urlInfo, responseHelper, responseHelper.getParams());
+			result = this.invokeAction(clazz.newInstance(), method, urlInfo, responseHelper, responseHelper.getParams());
 		} else {
 			// action(ResponseHelper)
 			method = this.methodExists(clazz, urlInfo.getAction(), new Class[] { ResponseHelper.class });
@@ -182,7 +238,7 @@ class ServletHelper {
 					LOGGER.debug("Calling {}.{}(ResponseHelper)", urlInfo.getController(), urlInfo.getAction());
 				}
 				responseHelper.notRenderPage(method);
-				result = this.invoke(clazz.newInstance(), method, urlInfo, responseHelper);
+				result = this.invokeAction(clazz.newInstance(), method, urlInfo, responseHelper);
 			} else {
 				// action(Map<String,Object>)
 				method = this.methodExists(clazz, urlInfo.getAction(), new Class[] { Map.class });
@@ -191,7 +247,7 @@ class ServletHelper {
 						LOGGER.debug("Calling {}.{}(Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
 					}
 					responseHelper.notRenderPage(method);
-					result = this.invoke(clazz.newInstance(), method, urlInfo, responseHelper.getParams());
+					result = this.invokeAction(clazz.newInstance(), method, urlInfo, responseHelper.getParams());
 				} else {
 					// action()
 					method = clazz.getMethod(urlInfo.getAction(), new Class[] {});
@@ -199,7 +255,7 @@ class ServletHelper {
 						LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
 					}
 					responseHelper.notRenderPage(method);
-					result = this.invoke(clazz.newInstance(), method, urlInfo);
+					result = this.invokeAction(clazz.newInstance(), method, urlInfo);
 				}
 			}
 		}
@@ -223,7 +279,7 @@ class ServletHelper {
 	 *             if the HTTP_METHOD that comes in the request is not accepted
 	 *             by class's method.
 	 */
-	private Object invoke(Object clazz, Method method, UrlInfo urlInfo, Object... args) throws IllegalAccessException, InvocationTargetException {
+	private Object invokeAction(Object clazz, Method method, UrlInfo urlInfo, Object... args) throws IllegalAccessException, InvocationTargetException {
 		if (this.isRequestMethodServed(method, urlInfo.getRequestMethod())) {
 			return method.invoke(clazz, args);
 		} else {

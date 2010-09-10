@@ -16,7 +16,6 @@
 package net.sf.serfj;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -122,48 +121,7 @@ public class RestServlet extends HttpServlet {
 		}
 		// Calling the controller's action
 		ResponseHelper responseHelper = new ResponseHelper(this.getServletContext(), request, response, urlInfo, config.getString(Config.VIEWS_DIRECTORY));
-		invokeAction(urlInfo, responseHelper);
+		helper.invokeAction(urlInfo, responseHelper);
 		responseHelper.doResponse();
 	}
-
-	private void invokeAction(UrlInfo urlInfo, ResponseHelper responseHelper) throws ServletException {
-		try {
-			// May be there isn't any controller, so the page will be rendered
-			// without calling any action
-			if (urlInfo.getController() != null) {
-				ServletHelper.Strategy strategy = helper.calculateStrategy(urlInfo.getController());
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Strategy: {}", strategy);
-				}
-				Object result = null;
-				try {
-					switch (strategy) {
-					case INHERIT:
-						result = helper.inheritedStrategy(urlInfo, responseHelper);
-						break;
-					default:
-						result = helper.signatureStrategy(urlInfo, responseHelper);
-						break;
-					}
-					// Si hay un resultado, lo serializamos, así no lo tiene que hacer el
-					// desarrollador en el método del controlador
-					if (result != null) {
-						responseHelper.serialize(result);
-					}
-				} catch (InvocationTargetException e) {
-					responseHelper.serialize(e.getTargetException());
-				}
-			} else {
-				LOGGER.warn("There is not controller defined for url [{}]", urlInfo.getUrl());
-			}
-		} catch (ClassNotFoundException e) {
-			LOGGER.warn(e.getLocalizedMessage(), e);
-		} catch (NoSuchMethodException e) {
-			LOGGER.warn("NoSuchMethodException {}", e.getLocalizedMessage());
-		} catch (Exception e) {
-			LOGGER.warn(e.getLocalizedMessage(), e);
-			throw new ServletException(e);
-		}
-	}
-
 }
