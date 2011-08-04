@@ -80,8 +80,10 @@ public class RestServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse)
+	 * Parses the request to get information about what controller is trying to call, then
+	 * invoke the action from that controller (if any), and finally gives an answer.<br>
+	 * <br>
+	 * Basically it only dispatchs the request to a controller.
 	 */
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

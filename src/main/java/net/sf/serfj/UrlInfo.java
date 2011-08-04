@@ -46,6 +46,9 @@ class UrlInfo {
 
 	public void addId(String id) {
 		this.identifiers.put("id", id);
+		if (this.resource != null) {
+		    this.addId(this.resource, id);
+		}
 	}
 
 	public Map<String, String> getIdentifiers() {

@@ -89,7 +89,7 @@ public class RestController {
      * /sessions/1/users/2 -> Id: 2, identifier of 'users'<br>
      */
     protected String getId() {
-        return this.getId(this.response.getId());
+        return this.response.getId();
     }
 
     /**

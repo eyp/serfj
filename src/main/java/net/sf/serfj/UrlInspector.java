@@ -89,10 +89,10 @@ class UrlInspector {
 				}
 			}
 		}
+        // Puts the main resource
+        info.setResource(resource);
 		// Puts the main resource's ID
 		info.addId(id);
-		// Puts the main resource
-		info.setResource(resource);
 		// Puts the REST action
 		info.setAction(deduceAction(id, action, requestMethod));
 		// Puts the result type
@@ -150,7 +150,7 @@ class UrlInspector {
 	 * <br/>
 	 * GET: with ID => show, without ID => index.<br/>
 	 * POST: create.<br/>
-	 * DELETE: destroy.<br/>
+	 * DELETE: delete.<br/>
 	 * PUT: update.<br/>
 	 * <br/>
 	 * 
