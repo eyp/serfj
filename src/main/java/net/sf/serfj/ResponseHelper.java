@@ -240,8 +240,9 @@ public class ResponseHelper {
 					LOGGER.warn("There is not object to serialize, returning no content response code: {}", HttpURLConnection.HTTP_NO_CONTENT);
 					response.setStatus(HttpURLConnection.HTTP_NO_CONTENT);
 					response.getWriter().flush();
+				} else {
+				    this.serialize();
 				}
-				this.serialize();
 			}
 		}
 	}

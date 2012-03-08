@@ -45,7 +45,8 @@ public class UrlUtilsTest extends TestCase {
 		assertEquals("person", utils.singularize("people"));
 		assertEquals("child", utils.singularize("children"));
 		assertEquals("leaf", utils.singularize("leaves"));
-		assertEquals("axes", utils.singularize("axis"));
+        assertEquals("axes", utils.singularize("axis"));
+        assertEquals("signature", utils.singularize("signatures"));
 	}
 
 	public void testIsIdentifier() {
@@ -53,10 +54,10 @@ public class UrlUtilsTest extends TestCase {
 		assertTrue(utils.isIdentifier(stringToCheck));
 		stringToCheck = "90";
 		assertTrue(utils.isIdentifier(stringToCheck));
-		stringToCheck = "907598347";
-		assertTrue(utils.isIdentifier(stringToCheck));
+        stringToCheck = "907598347";
+        assertTrue(utils.isIdentifier(stringToCheck));
 		stringToCheck = "9075f983s7";
-		assertFalse(utils.isIdentifier(stringToCheck));
+		assertTrue(utils.isIdentifier(stringToCheck));
 		stringToCheck = "a9075f983s7";
 		assertFalse(utils.isIdentifier(stringToCheck));
 	}

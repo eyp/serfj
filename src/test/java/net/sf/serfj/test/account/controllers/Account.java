@@ -26,9 +26,16 @@ import net.sf.serfj.annotations.GET;
  * @author Eduardo Yáñez
  */
 public class Account {
-	@GET
-	public void index(ResponseHelper response, Map<String, String> params) throws IOException {
-	}
+    @GET
+    public void index(ResponseHelper response, Map<String, String> params) throws IOException {
+    }
+
+    @GET
+    public void show(ResponseHelper response, Map<String, String> params) throws IOException {
+        if (response.getSerializer() != null) {
+            response.serialize("Account object to serialize");
+        }
+    }
 
 	@GET
 	public void newResource(ResponseHelper response, Map<String, String> params) throws IOException {
@@ -38,7 +45,7 @@ public class Account {
 	@GET
 	public void balance(ResponseHelper response, Map<String, String> params) throws IOException {
 		if (response.getSerializer() != null) {
-			response.serialize("OBJECT 2 JSON");
+			response.serialize("Balance object to serialize");
 		} else {
 			response.renderPage("balance");
 		}

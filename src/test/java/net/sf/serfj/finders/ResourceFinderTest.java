@@ -15,15 +15,13 @@
  */
 package net.sf.serfj.finders;
 
-import junit.framework.TestCase;
-import net.sf.serfj.finders.ResourceFinder;
-
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
  * @author: Eduardo Yáñez 
  */
-public class ResourceFinderTest extends TestCase {
+public class ResourceFinderTest {
 	@Test
 	public void testFindResource() {
 		ResourceFinder finder = new ResourceFinder("net.sf.serfj.test", "controllers", "Controller", "");

@@ -45,7 +45,7 @@ public class SerializerFinder extends ResourceFinder {
 	protected static final String DEFAULT_SERIALIZERS_PACKAGE = "net.sf.serfj.serializers";
 	private static final String PAGE_EXTENSION = "page";
 	private static final String JSON_EXTENSION = "json";
-	private static final String B64_EXTENSION = "64";
+	private static final String B64_EXTENSION = "base64";
 	private static final String XML_EXTENSION = "xml";
 
 	private static Map<String, String> contentType2Extension = new HashMap<String, String>(4);

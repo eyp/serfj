@@ -49,7 +49,8 @@ public final class UrlUtils {
 		singulars.put("wives", "wife");
 		singulars.put("lives", "life");
 		singulars.put("knives", "knife");
-		singulars.put("mice", "mouse");
+        singulars.put("mice", "mouse");
+        singulars.put("signatures", "signature");
 	}
 
 	/**
@@ -128,7 +129,7 @@ public final class UrlUtils {
 		if (string == null) {
 			return false;
 		}
-		return string.matches("[0-9]*");
+		return string.matches("[0-9].*");
 	}
 
 	/**

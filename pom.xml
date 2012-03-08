@@ -1,217 +1,209 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sf</groupId>
-	<artifactId>serfj</artifactId>
-	<version>0.3.1</version>
-	<packaging>jar</packaging>
-	<name>SerfJ</name>
-	<description>Simple Ever REST Framework for Java</description>
-	<url>http://sourceforge.net/projects/serfj/</url>
-	
-	<!-- This is for using Sonatype submit process to Maven Central -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.serfj</groupId>
+    <artifactId>serfj</artifactId>
+    <version>0.3.2-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>SerfJ</name>
+    <description>Simple Ever REST Framework for Java</description>
+    <url>http://sourceforge.net/projects/serfj/</url>
+    <!-- This is for using Sonatype submit process to Maven Central -->
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>3</version>
     </parent>
-  
-  	<licenses>
-		<license>
-			<name>Apache 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
-	
-	<scm>
-		<url>http://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <scm>
+        <url>http://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
         <connection>scm:svn:http://serfj.svn.sourceforge.net/svnroot/serfj/trunk</connection>
         <developerConnection>scm:svn:https://serfj.svn.sourceforge.net/svnroot/serfj/trunk</developerConnection>
-	</scm>
-	
-	<organization>
-		<name>ElPaso Software</name>
-		<url>http://www.elpaso-software.com</url>
-	</organization>
-
-	<developers>
-		<developer>
-			<id>eyp</id>
-			<name>Eduardo Yáñez Parareda</name>
-			<email>eduardo.yanez@gmail.com</email>
-			<url />
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-			<properties>
-				<picUrl />
-			</properties>
-		</developer>
-	</developers>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-    
+    </scm>
+    <organization>
+        <name>ElPaso Software</name>
+        <url>http://www.elpaso-software.com</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>eyp</id>
+            <name>Eduardo Yáñez Parareda</name>
+            <email>eduardo.yanez@gmail.com</email>
+            <url />
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+            <properties>
+                <picUrl />
+            </properties>
+        </developer>
+    </developers>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <profiles>
-      <profile>
-        <id>release-sign-artifacts</id>
-        <activation>
-          <property>
-            <name>performRelease</name>
-            <value>true</value>
-          </property>
-        </activation>
-        <build>
-          <plugins>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <build>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-          </plugins>
-        </build>
-      </profile>
-    </profiles>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<verbose>true</verbose>
-					<fork>true</fork>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<configuration />
-			</plugin>
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<aggregate>true</aggregate>
-					<doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet>
-					<docletArtifact>
-						<groupId>gr.spinellis</groupId>
-						<artifactId>UmlGraph</artifactId>
-						<version>4.6</version>
-					</docletArtifact>
-					<additionalparam>
-						-inferrel -inferdep -quiet -hide java.*
-						-collpackages java.util.* -qualify
-						-postfixpackage -nodefontsize 9
-						-nodefontpackagesize 7 
-                    </additionalparam>
-				</configuration>
-			</plugin>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-repository-plugin</artifactId>
-               <version>2.2</version>
-               <configuration />
-             </plugin>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-release-plugin</artifactId>
-               <version>2.0</version>
-               <configuration>
-                   <releaseProfiles>release-sign-artifacts</releaseProfiles>
-               </configuration>
-             </plugin>
-             <plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-5</version>
-				<configuration>
-				    <descriptor>src/main/assembly/assembly-zip.xml</descriptor>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <fork>true</fork>
+                    <source>1.5</source>
+                    <target>1.5</target>
                 </configuration>
-             </plugin>
-          </plugins>
-	</build>
-	
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.5</version>
-			</plugin>
-		</plugins>
-	</reporting>
-	
-	<dependencies>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>0.9.19</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.5.11</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jettison</groupId>
-			<artifactId>jettison</artifactId>
-			<version>1.2</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>stax</groupId>
-			<artifactId>stax</artifactId>
-			<version>1.2.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>httpunit</groupId>
-			<artifactId>httpunit</artifactId>
-			<version>1.7</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>nekohtml</groupId>
-			<artifactId>nekohtml</artifactId>
-			<version>1.9.6.2</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <configuration />
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <source>1.5</source>
+                    <aggregate>true</aggregate>
+                    <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet>
+                    <docletArtifact>
+                        <groupId>gr.spinellis</groupId>
+                        <artifactId>UmlGraph</artifactId>
+                        <version>4.6</version>
+                    </docletArtifact>
+                    <additionalparam>-inferrel -inferdep -quiet -hide java.*
+                        -collpackages java.util.* -qualify
+                        -postfixpackage -nodefontsize 9
+                        -nodefontpackagesize 7</additionalparam>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-repository-plugin</artifactId>
+                <version>2.2</version>
+                <configuration />
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <releaseProfiles>release-sign-artifacts</releaseProfiles>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2-beta-5</version>
+                <configuration>
+                    <descriptor>src/main/assembly/assembly-zip.xml</descriptor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+        </plugins>
+    </reporting>
+    <dependencies>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>0.9.19</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.11</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>stax</groupId>
+            <artifactId>stax</artifactId>
+            <version>1.2.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>httpunit</groupId>
+            <artifactId>httpunit</artifactId>
+            <version>1.7</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.6.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

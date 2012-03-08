@@ -15,9 +15,11 @@
  */
 package net.sf.serfj;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import junit.framework.TestCase;
+import net.sf.serfj.serializers.Base64Serializer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,39 +54,74 @@ public class RestServletTest extends TestCase {
 
 	@Test
 	public void testService() {
-		testGet("banks", "bank/index.html", "text/html");
+        testGet("banks", "bank/index.html", "text/html");
 		testGet("banks/1", "bank/show.html", "text/html");
 		testGet("banks/1/accounts", "account/index.html", "text/html");
 		testGet("banks/1/accounts/new", "account/new.html", "text/html");
 		testGet("banks/1/accounts/1/balance", "account/balance.jsp", "text/html");
 		testGet("banks/1/accounts/1/balance.json", "account/balance.jsp", "application/json");
+        testGet64("banks/1/accounts/2.base64", "Account object to serialize", "application/octect-stream");
+        testGet64("banks/1/accounts/1/balance.base64", "Balance object to serialize", "application/octect-stream");
 	}
 
-	/**
-	 * Tests a GET request. Receives an URL to test, and the page that
-	 * controller must respond.
-	 * 
-	 * @param requestedUrl
-	 *            - URL to test.
-	 * @param expectedPage
-	 *            - Expected response from the requested URL.
-	 */
-	private void testGet(String requestedUrl, String expectedPage, String contentType) {
-		ServletUnitClient sc = sr.newClient();
-		try {
-			WebRequest request = new GetMethodWebRequest("http://test.meterware.com/" + requestedUrl);
-			WebResponse response = sc.getResponse(request);
-			assertNotNull("No response received", response);
-			assertEquals("content type", contentType, response.getContentType());
-		} catch (HttpNotFoundException e) {
-			assertPage(expectedPage, e);
-		} catch (StringIndexOutOfBoundsException e) {
-			fail("Page not found");
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			fail(e.getLocalizedMessage());
-		}
-	}
+    /**
+     * Tests a GET request. Receives an URL to test, and the page that
+     * controller must respond.
+     * 
+     * @param requestedUrl
+     *            - URL to test.
+     * @param expectedPage
+     *            - Expected response from the requested URL.
+     */
+    private void testGet(String requestedUrl, String expectedPage, String contentType) {
+        ServletUnitClient sc = sr.newClient();
+        try {
+            WebRequest request = new GetMethodWebRequest("http://test.meterware.com/" + requestedUrl);
+            WebResponse response = sc.getResponse(request);
+            assertNotNull("No response received", response);
+            assertEquals("content type", contentType, response.getContentType());
+        } catch (HttpNotFoundException e) {
+            assertPage(expectedPage, e);
+        } catch (StringIndexOutOfBoundsException e) {
+            fail("Page not found");
+        } catch (Exception e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+            fail(e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Tests a GET request. Receives an URL to test, and the page that
+     * controller must respond.
+     * 
+     * @param requestedUrl
+     *            - URL to test.
+     * @param expectedPage
+     *            - Expected response from the requested URL.
+     */
+    private void testGet64(String requestedUrl, String expectedContent, String contentType) {
+
+        ServletUnitClient sc = sr.newClient();
+        try {
+            WebRequest request = new GetMethodWebRequest("http://test.meterware.com/" + requestedUrl);
+            WebResponse response = sc.getResponse(request);
+            assertNotNull("No response received", response);
+            assertEquals("content type", contentType, response.getContentType());
+            Base64Serializer serializer = new Base64Serializer();
+            ByteArrayInputStream is = (ByteArrayInputStream) response.getInputStream();
+            StringBuilder base64Object = new StringBuilder();
+            while (is.available() > 0) {
+                base64Object.append((char) is.read());
+            }
+            String deserialized = (String) serializer.deserialize(base64Object.toString());
+            assertNotNull(deserialized);
+        } catch (StringIndexOutOfBoundsException e) {
+            fail("Page not found");
+        } catch (Exception e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+            fail(e.getLocalizedMessage());
+        }
+    }
 
 	/**
 	 * If the page expected is not found (HTTP 404 error), then is ok, else, the
