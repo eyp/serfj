@@ -88,16 +88,6 @@ public class RestServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Eliminamos de la URI el contexto
-	    // TODO Cambiar la llamada por esto, probarlo...
-	    /*
-	     * String path = req.getPathInfo();
-               if (path == null) {
-                       path = req.getServletPath();
-                       if (path == null) {
-                               throw new ServletException(UNDEFINED_PATH);
-                       }
-               }
-	     */
 		String url = request.getRequestURI().substring(request.getContextPath().length());
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("url => {}", url);
