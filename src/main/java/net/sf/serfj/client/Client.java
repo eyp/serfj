@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.rmi.ConnectException;
 import java.util.Map;
 
 import net.sf.serfj.HttpMethod;
@@ -237,6 +238,10 @@ public class Client {
 				}
 				return null;
 			}
+			if (is == null) {
+			    LOGGER.warn("InputStream is null!!");
+			    throw new ConnectException("Can't connect to server");
+			}
 			rd = new BufferedReader(new InputStreamReader(is));
 
 			StringBuilder response = new StringBuilder();
@@ -245,13 +250,20 @@ public class Client {
 				response.append(line);
 			}
 			Object result = this.deserialize(response.toString(), UrlUtils.getInstance().getExtension(restUrl));
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Read object in response is: {}", (result != null ? result.toString() : null));
+			if (result == null) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Nothing was deserialized, returning read content");
+                }
+                return response.toString();
+			} else {
+    			if (LOGGER.isDebugEnabled()) {
+    				LOGGER.debug("Read object in response is: {}", (result != null ? result.toString() : null));
+    			}
+    			if (result instanceof Exception) {
+    				throw new WebServiceException((Exception) result);
+    			}
+    			return result;
 			}
-			if (result instanceof Exception) {
-				throw new WebServiceException((Exception) result);
-			}
-			return result;
 		} catch (IOException e) {
 			LOGGER.error("Request error", e);
 			throw e;
@@ -317,24 +329,29 @@ public class Client {
 	 */
 	private Object deserialize(String serializedObject, String extension) throws IOException {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Deserializing object to {}", extension);
+			LOGGER.debug("Deserializing object to [{}]", extension);
 		}
 		SerializerFinder finder = new SerializerFinder(extension);
 		String serializerClass = finder.findResource(null);
-		try {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Serializing using {}", serializerClass);
-			}
-			Class<?> clazz = Class.forName(serializerClass);
-			Method deserializeMethod = clazz.getMethod("deserialize", new Class[] { String.class });
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Calling {}.serialize", serializerClass);
-			}
-			return deserializeMethod.invoke(clazz.newInstance(), serializedObject);
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			LOGGER.error("Can't deserialize object with {} serializer", serializerClass);
-			throw new IOException(e.getLocalizedMessage());
+		if (serializerClass == null) {
+            LOGGER.warn("Serializer not found for extension [{}]", extension);
+		    return null;
+		} else {
+    		try {
+    			if (LOGGER.isDebugEnabled()) {
+    				LOGGER.debug("Serializing using {}", serializerClass);
+    			}
+    			Class<?> clazz = Class.forName(serializerClass);
+    			Method deserializeMethod = clazz.getMethod("deserialize", new Class[] { String.class });
+    			if (LOGGER.isDebugEnabled()) {
+    				LOGGER.debug("Calling {}.serialize", serializerClass);
+    			}
+    			return deserializeMethod.invoke(clazz.newInstance(), serializedObject);
+    		} catch (Exception e) {
+    			LOGGER.error(e.getLocalizedMessage(), e);
+    			LOGGER.error("Can't deserialize object with {} serializer", serializerClass);
+    			throw new IOException(e.getLocalizedMessage());
+    		}
 		}
 	}
 }
