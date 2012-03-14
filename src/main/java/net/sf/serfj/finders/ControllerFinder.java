@@ -29,7 +29,7 @@ import net.sf.serfj.Config;
  *   <li>packages.style: It's the strategy used to search for controllers.</li>
  * </ul>
  * 
- * @author: Eduardo Yáñez 
+ * @author Eduardo Yáñez 
  */
 public class ControllerFinder extends ResourceFinder {
 

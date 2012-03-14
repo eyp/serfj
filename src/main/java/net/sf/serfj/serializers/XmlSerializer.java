@@ -20,7 +20,7 @@ import com.thoughtworks.xstream.XStream;
 /**
  * Default XML serializer/deserializer.
  * 
- * @author: Eduardo Yáñez
+ * @author Eduardo Yáñez
  */
 public class XmlSerializer implements Serializer {
 

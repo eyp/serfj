@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *   <li>suffix.serializers: It's the suffix that serializers' classes have.</li>
  * </ul>
  * 
- * @author: Eduardo Yáñez 
+ * @author Eduardo Yáñez 
  */
 public class ResourceFinder {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceFinder.class);
