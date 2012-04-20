@@ -1,5 +1,10 @@
 SerfJ, copyright 2010-2012, Eduardo Yáñez Parareda.
 
+Last version 0.3.3 (20120420)
+
+Defect #36: Requests with null param values cause NPE.
+Binary compiled for Java 5.
+
 Last version 0.3.2 (20120314)
 
 Patch #32: Updated Maven plugins and added versions at POM for plugins without version.

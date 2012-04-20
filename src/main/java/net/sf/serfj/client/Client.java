@@ -108,6 +108,9 @@ public class Client {
 		} catch (IOException e) {
 			LOGGER.error("Request error", e);
 			throw e;
+		} catch (Exception e) {
+            LOGGER.error("Request error", e);
+            throw new IOException(e);
 		} finally {
 			if (conn != null) {
 				conn.disconnect();
@@ -200,7 +203,10 @@ public class Client {
 		} catch (IOException e) {
 			LOGGER.error("Request error", e);
 			throw e;
-		} finally {
+		} catch (Exception e) {
+            LOGGER.error("Request error", e);
+            throw new IOException(e);
+        } finally {
 			if (wr != null) {
 				wr.close();
 			}
@@ -267,7 +273,10 @@ public class Client {
 		} catch (IOException e) {
 			LOGGER.error("Request error", e);
 			throw e;
-		} finally {
+		} catch (Exception e) {
+            LOGGER.error("Request error", e);
+            throw new IOException(e);
+        } finally {
 			if (rd != null) {
 				rd.close();
 			}
@@ -302,9 +311,13 @@ public class Client {
 				}
 				try {
 					// Hay que codificar los valores de los parametros para que
-					// las llamadas REST se hagan
-					// correctamente
-					url.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue(), CHARSET_ENCODING));
+					// las llamadas REST se hagan correctamente
+				    if (entry.getValue() != null) {
+				        url.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue(), CHARSET_ENCODING));
+				    } else {
+				        LOGGER.warn("Param {} is null", entry.getKey());
+                        url.append(entry.getKey()).append("=").append("");
+				    }
 				} catch (UnsupportedEncodingException ex) {
 					// Esta excepcion saltaria si la codificacion no estuviese
 					// soportada, pero UTF-8 siempre esta soportada.

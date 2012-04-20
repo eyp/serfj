@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.serfj</groupId>
     <artifactId>serfj</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
     <packaging>jar</packaging>
     <name>SerfJ</name>
     <description>Simple Ever REST Framework for Java</description>
@@ -87,8 +87,8 @@
                 <configuration>
                     <verbose>true</verbose>
                     <fork>true</fork>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.5</source>
+                    <target>1.5</target>
                 </configuration>
             </plugin>
             <plugin>
