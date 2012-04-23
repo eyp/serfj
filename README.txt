@@ -1,5 +1,9 @@
 SerfJ, copyright 2010-2012, Eduardo Yáñez Parareda.
 
+Last version 0.3.4 (20120424)
+
+Defect #37: RestController.getRemoteAddress() doesn't check proxy headers.
+
 Last version 0.3.3 (20120420)
 
 Defect #36: Requests with null param values cause NPE.

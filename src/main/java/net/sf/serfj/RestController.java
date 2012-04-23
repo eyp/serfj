@@ -63,10 +63,18 @@ public class RestController {
     }
 
     /**
-     * Returns the remote address with including protocol. For example: http://192.168.12.10
+     * Returns the remote address with including protocol. For example: http://192.168.12.10.<br>
+     * Checks for x-forwarded-for and x_forwarded_for headers in case there were proxies between client and server.
      */
     protected String getRemoteAddress() {
-        return this.response.getRequest().getScheme() + "://" + this.response.getRequest().getRemoteAddr();
+        String ipAddress = this.response.getRequest().getHeader("x-forwarded-for");
+        if (ipAddress == null) {
+            ipAddress = this.response.getRequest().getHeader("X_FORWARDED_FOR");
+            if (ipAddress == null){
+                ipAddress = this.response.getRequest().getRemoteAddr();
+            }
+        }
+        return this.response.getRequest().getScheme() + "://" + ipAddress;
     }
     
 	/**
