@@ -342,7 +342,7 @@ public class Client {
 	 */
 	private Object deserialize(String serializedObject, String extension) throws IOException {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Deserializing object to [{}]", extension);
+			LOGGER.debug("Deserializing object [{}] to [{}]", serializedObject, extension);
 		}
 		SerializerFinder finder = new SerializerFinder(extension);
 		String serializerClass = finder.findResource(null);
@@ -352,12 +352,12 @@ public class Client {
 		} else {
     		try {
     			if (LOGGER.isDebugEnabled()) {
-    				LOGGER.debug("Serializing using {}", serializerClass);
+    				LOGGER.debug("Deserializing using {}", serializerClass);
     			}
     			Class<?> clazz = Class.forName(serializerClass);
     			Method deserializeMethod = clazz.getMethod("deserialize", new Class[] { String.class });
     			if (LOGGER.isDebugEnabled()) {
-    				LOGGER.debug("Calling {}.serialize", serializerClass);
+    				LOGGER.debug("Calling {}.deserialize", serializerClass);
     			}
     			return deserializeMethod.invoke(clazz.newInstance(), serializedObject);
     		} catch (Exception e) {
