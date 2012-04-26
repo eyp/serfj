@@ -16,20 +16,32 @@
 --------------------------------------------------------------------------------
 SerfJ - Simplest Ever REST Framework for Java
 --------------------------------------------------------------------------------
+Using SerfJ is the easiest way of developing Java REST web applications. It helps you to develop your 
+application over an elegant MVC arquitecture, giving more importance to convention than configuration, 
+so for example, you will not have to have configuration files or annotations in order to specify which 
+view serves a controller's method. However, SerfJ is very flexible library, so if you want to jump over 
+those conventions, you can configure the behaviour of your applications as you like.
+
+The framework tries to meet JSR 311 specification, but it doesn't follow every point of that, because the 
+purpose is to have a very intuitive library, and some some aspects of the specification are out of the 
+scope of SerfJ.
+
+Documentation: http://serfj.sourceforge.net
+
 
 Version 0.3.4 (20120424)
-========================
+------------------------
 
 Defect #37: RestController.getRemoteAddress() doesn't check proxy headers.
 
 Version 0.3.3 (20120420)
-========================
+------------------------
 
 Defect #36: Requests with null param values cause NPE.
 Binary compiled for Java 5.
 
 Version 0.3.2 (20120314)
-========================
+------------------------
 
 Patch #32: Updated Maven plugins and added versions at POM for plugins without version.
 Patch #33: Updated JAR dependencies versions
@@ -56,7 +68,7 @@ New dependencies:
 * stax-api-1.0.1
 
 Version 0.3.1 (20110804)
-========================
+------------------------
 
 Defect #26: Calling getId(resource) always returns null
 Feature #20: Add method getId() to controllers
@@ -66,3 +78,4 @@ For more information and documentation, please visit:
   * Website: http://serfj.sourceforge.net
   * Blog: http://serfj.wordpress.com
   * Project hosted on GitHub: https://github.com/eyp/serfj
+
