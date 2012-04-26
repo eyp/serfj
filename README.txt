@@ -16,15 +16,16 @@
 --------------------------------------------------------------------------------
 SerfJ - Simplest Ever REST Framework for Java
 --------------------------------------------------------------------------------
-Using SerfJ is the easiest way of developing Java REST web applications. It helps you to develop your 
-application over an elegant MVC arquitecture, giving more importance to convention than configuration, 
-so for example, you will not have to have configuration files or annotations in order to specify which 
-view serves a controller's method. However, SerfJ is very flexible library, so if you want to jump over 
-those conventions, you can configure the behaviour of your applications as you like.
+Using SerfJ is the easiest way of developing Java REST web applications. It helps
+you develop your application over an elegant MVC arquitecture, giving more importance
+to convention than configuration, so for example, you will not have to have configuration 
+files or annotations in order to specify which view serves a controller's method. However, 
+SerfJ is very flexible library, so if you want to jump over those conventions, you can 
+configure the behaviour of your applications as you like.
 
-The framework tries to meet JSR 311 specification, but it doesn't follow every point of that, because the 
-purpose is to have a very intuitive library, and some some aspects of the specification are out of the 
-scope of SerfJ.
+The framework tries to meet JSR 311 specification, but it doesn't follow every point 
+of that, because the purpose is to have a very intuitive library, and some some aspects 
+of the specification are out of the scope of SerfJ.
 
 Documentation: http://serfj.sourceforge.net
 
