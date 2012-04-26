@@ -1,15 +1,35 @@
-SerfJ, copyright 2010-2012, Eduardo Yáñez Parareda.
+/*
+ * Copyright 2010 Eduardo Yáñez Parareda
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+--------------------------------------------------------------------------------
+SerfJ - Simplest Ever REST Framework for Java
+--------------------------------------------------------------------------------
 
-Last version 0.3.4 (20120424)
+Version 0.3.4 (20120424)
+========================
 
 Defect #37: RestController.getRemoteAddress() doesn't check proxy headers.
 
-Last version 0.3.3 (20120420)
+Version 0.3.3 (20120420)
+========================
 
 Defect #36: Requests with null param values cause NPE.
 Binary compiled for Java 5.
 
-Last version 0.3.2 (20120314)
+Version 0.3.2 (20120314)
+========================
 
 Patch #32: Updated Maven plugins and added versions at POM for plugins without version.
 Patch #33: Updated JAR dependencies versions
@@ -35,7 +55,8 @@ New dependencies:
 * stax-1.2.0
 * stax-api-1.0.1
 
-Last version 0.3.1 (20110804)
+Version 0.3.1 (20110804)
+========================
 
 Defect #26: Calling getId(resource) always returns null
 Feature #20: Add method getId() to controllers
@@ -44,4 +65,4 @@ Patch #25: RestServlet refactor
 For more information and documentation, please visit:
   * Website: http://serfj.sourceforge.net
   * Blog: http://serfj.wordpress.com
-  * Tracker and Roadmap: http://serfj.elpaso-software.com
+  * Project hosted on GitHub: https://github.com/eyp/serfj

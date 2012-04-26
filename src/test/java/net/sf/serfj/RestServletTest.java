@@ -134,9 +134,10 @@ public class RestServletTest extends TestCase {
 	 */
 	private void assertPage(String expectedPage, HttpNotFoundException e) {
 		if (e.getResponseCode() == 404) {
-			assertTrue(e.getLocalizedMessage().indexOf("[http://localhost/views/" + expectedPage + "]") > 0);
+			assertTrue(e.getLocalizedMessage().indexOf("[http://localhost/src/test/webapp/WEB-INF/views/" + expectedPage + "]") > 0);
 		} else {
 			fail(e.getLocalizedMessage());
 		}
 	}
 }
+
