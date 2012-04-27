@@ -1,18 +1,24 @@
-
 SerfJ - Simplest Ever REST Framework for Java
 =============================================
-Using SerfJ is the easiest way of developing Java [Rest] web applications. It helps
+Using SerfJ is the easiest way of developing Java [REST] web applications. It helps
 you develop your application over an elegant MVC arquitecture, giving more importance
 to convention than configuration, so for example, you will not have to have configuration 
 files or annotations in order to specify which view serves a controller's method. However, 
 SerfJ is a very flexible library, so if you want to jump over those conventions, you can 
 configure the behaviour of your applications as you like.
 
-The framework tries to meet [JSR311] specification, but it doesn't follow every point 
+The framework tries to meet [JSR-311] specification, but it doesn't follow every point 
 of that, because the purpose is to have a very intuitive library, and some some aspects 
 of the specification are out of the scope of SerfJ.
 
-For documentation and downloads, please visit the website: http://serfj.sourceforge.net
+### [Website] - [Reference] - [Javadoc] - [Spanish website]
+
+[Website]: http://serfj.sourceforge.net "Website"
+[Spanish website]: http://serfj.sourceforge.net/es "Spanish website"
+[Reference]: http://serfj.sourceforge.net/reference.html "Reference"
+[Javadoc]: http://serfj.sourceforge.net/javadoc "Javadoc"
+[REST]: http://en.wikipedia.org/wiki/Representational_State_Transfer "REST"
+[JSR-311]: http://jcp.org/en/jsr/detail?id=311 "JSR-311"
 
 ### Release notes
 #### Version 0.3.4 (20120424)
@@ -44,8 +50,7 @@ For documentation and downloads, please visit the website: http://serfj.sourcefo
 * Add method getId() to controllers
 * RestServlet refactor
 
-Copyright 2010 Eduardo Yáñez Parareda, licensed under the [ApacheLicense]
- 
-[ApacheLicense]: http://www.apache.org/licenses/LICENSE-2.0 "Apache License, Version 2.0"
-[Rest]: http://en.wikipedia.org/wiki/Representational_State_Transfer "REST"
-[JSR311]: http://jcp.org/en/jsr/detail?id=311 "JSR-311"
+Copyright 2010 Eduardo Yáñez Parareda, licensed under the [Apache License]
+
+[Apache License]: http://www.apache.org/licenses/LICENSE-2.0 "Apache License, Version 2.0"
+
