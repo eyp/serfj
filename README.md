@@ -11,12 +11,13 @@ The framework tries to meet [JSR-311] specification, but it doesn't follow every
 of that, because the purpose is to have a very intuitive library, and some some aspects 
 of the specification are out of the scope of SerfJ.
 
-### [Website] - [Reference] - [Javadoc] - [Spanish website]
+### [Website] - [Reference] - [Javadoc] - [Downloads] - [Spanish website]
 
 [Website]: http://serfj.sourceforge.net "Website"
 [Spanish website]: http://serfj.sourceforge.net/es "Spanish website"
 [Reference]: http://serfj.sourceforge.net/reference.html "Reference"
 [Javadoc]: http://serfj.sourceforge.net/javadoc "Javadoc"
+[Downloads]: http://serfj.sourceforge.net/downloads.html "Downloads"
 [REST]: http://en.wikipedia.org/wiki/Representational_State_Transfer "REST"
 [JSR-311]: http://jcp.org/en/jsr/detail?id=311 "JSR-311"
 
