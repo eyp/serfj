@@ -46,7 +46,8 @@ public class SerializerFinder extends ResourceFinder {
 	private static final String PAGE_EXTENSION = "page";
 	private static final String JSON_EXTENSION = "json";
 	private static final String B64_EXTENSION = "base64";
-	private static final String XML_EXTENSION = "xml";
+    private static final String XML_EXTENSION = "xml";
+    private static final String FILE_EXTENSION = "file";
 
 	private static Map<String, String> contentType2Extension = new HashMap<String, String>(4);
 
@@ -63,9 +64,12 @@ public class SerializerFinder extends ResourceFinder {
 	}
 
 	private void initExtensionsCache() {
-        contentType2Extension.put("application/json", "json");
-        contentType2Extension.put("text/xml", "xml");
-        contentType2Extension.put("application/octect-stream", "64");
+	    if (contentType2Extension.isEmpty()) {
+            contentType2Extension.put("application/json", JSON_EXTENSION);
+            contentType2Extension.put("text/xml", XML_EXTENSION);
+            contentType2Extension.put("application/octect-stream", B64_EXTENSION);
+            contentType2Extension.put("application/octect-stream", FILE_EXTENSION);
+	    }
 	}
 	
 	/**
@@ -94,7 +98,8 @@ public class SerializerFinder extends ResourceFinder {
 
 	private Boolean isDefaultImplementation() {
 		if (JSON_EXTENSION.equals(this.getPrefix().toLowerCase()) 
-		        || B64_EXTENSION.equals(this.getPrefix().toLowerCase()) 
+                || FILE_EXTENSION.equals(this.getPrefix().toLowerCase()) 
+                || B64_EXTENSION.equals(this.getPrefix().toLowerCase()) 
 		        || XML_EXTENSION.equals(this.getPrefix().toLowerCase())) {
 			return true;
 		}

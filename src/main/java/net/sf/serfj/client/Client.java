@@ -110,7 +110,7 @@ public class Client {
 			throw e;
 		} catch (Exception e) {
             LOGGER.error("Request error", e);
-            throw new IOException(e);
+            throw new IOException(e.getLocalizedMessage());
 		} finally {
 			if (conn != null) {
 				conn.disconnect();
@@ -205,7 +205,7 @@ public class Client {
 			throw e;
 		} catch (Exception e) {
             LOGGER.error("Request error", e);
-            throw new IOException(e);
+            throw new IOException(e.getLocalizedMessage());
         } finally {
 			if (wr != null) {
 				wr.close();
@@ -275,7 +275,7 @@ public class Client {
 			throw e;
 		} catch (Exception e) {
             LOGGER.error("Request error", e);
-            throw new IOException(e);
+            throw new IOException(e.getLocalizedMessage());
         } finally {
 			if (rd != null) {
 				rd.close();

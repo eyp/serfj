@@ -140,13 +140,20 @@ public class ResourceFinder {
 	}
 
 	protected String findByFunction(String model) {
-		String clazz = MessageFormat.format("{0}.{1}.{2}", mainPackage, alias, this.makeClassName(model));
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Searching resource [{}] by FUNCTIONAL style", clazz);
-		}
-		if (!existsClass(clazz)) {
-			return null;
-		}
+        String clazz = MessageFormat.format("{0}.{1}.{2}", mainPackage, alias, this.makeClassName());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Searching resource [{}] by FUNCTIONAL style without resource name", clazz);
+        }
+
+        if (!existsClass(clazz)) {
+            clazz = MessageFormat.format("{0}.{1}.{2}", mainPackage, alias, this.makeClassName(model));
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Searching resource [{}] by FUNCTIONAL style", clazz);
+            }
+    		if (!existsClass(clazz)) {
+    			return null;
+    		}
+        }
 		return clazz;
 	}
 
@@ -173,11 +180,16 @@ public class ResourceFinder {
 		return clazz;
 	}
 
-	protected String makeClassName(String model) {
-		String clazz = MessageFormat.format("{0}{1}{2}", utils.capitalize(prefix), 
-		        utils.capitalize(utils.singularize(model)), utils.capitalize(suffix));
-		return clazz;
-	}
+    protected String makeClassName(String model) {
+        String clazz = MessageFormat.format("{0}{1}{2}", utils.capitalize(prefix), 
+                utils.capitalize(utils.singularize(model)), utils.capitalize(suffix));
+        return clazz;
+    }
+
+    protected String makeClassName() {
+        String clazz = MessageFormat.format("{0}{1}", utils.capitalize(prefix), utils.capitalize(suffix));
+        return clazz;
+    }
 
 	protected String getPrefix() {
 		return this.prefix;

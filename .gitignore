@@ -1,3 +1,5 @@
+.classpath
+.project
 *.class
 
 # Package Files #
@@ -7,3 +9,5 @@
 
 # Directories
 target/
+.settings/
+bin/

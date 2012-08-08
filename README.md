@@ -1,81 +1,66 @@
-/*
- * Copyright 2010 Eduardo Yáñez Parareda
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 SerfJ - Simplest Ever REST Framework for Java
 =============================================
-Using SerfJ is the easiest way of developing Java REST web applications. It helps
+Using SerfJ is the easiest way of developing Java [REST] web applications. It helps
 you develop your application over an elegant MVC arquitecture, giving more importance
 to convention than configuration, so for example, you will not have to have configuration 
 files or annotations in order to specify which view serves a controller's method. However, 
-SerfJ is very flexible library, so if you want to jump over those conventions, you can 
+SerfJ is a very flexible library, so if you want to jump over those conventions, you can 
 configure the behaviour of your applications as you like.
 
-The framework tries to meet JSR 311 specification, but it doesn't follow every point 
+The framework tries to meet [JSR-311] specification, but it doesn't follow every point 
 of that, because the purpose is to have a very intuitive library, and some some aspects 
 of the specification are out of the scope of SerfJ.
 
-Documentation: http://serfj.sourceforge.net
+### [Website] - [Reference] - [Javadoc] - [Downloads] - [Spanish website]
 
+[Website]: http://serfj.sourceforge.net "Website"
+[Spanish website]: http://serfj.sourceforge.net/es "Spanish website"
+[Reference]: http://serfj.sourceforge.net/reference.html "Reference"
+[Javadoc]: http://serfj.sourceforge.net/javadoc "Javadoc"
+[Downloads]: http://serfj.sourceforge.net/downloads.html "Downloads"
+[REST]: http://en.wikipedia.org/wiki/Representational_State_Transfer "REST"
+[JSR-311]: http://jcp.org/en/jsr/detail?id=311 "JSR-311"
 
-Version 0.3.4 (20120424)
-------------------------
+### Release notes
+#### Version 0.4.0 (20120808)
 
-Defect #37: RestController.getRemoteAddress() doesn't check proxy headers.
+* Feature: Default FileSerializer implementation, now is possible to serve files for downloading.
+* Feature: New default extension (.file) for serving files.
+* Feature: Within functional style you are able to implement generic serializers for whatever model you have.
+* Feature: Now javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest and javax.servlet.http.HttpServletResponse are accessible from controllers.
+* Patch: Instead of implementing net.sf.serfj.serializers.Serializer developers must implement net.sf.serfj.serializers.ObjectSerializer for serializing objects.
+* Patch: RestController.addObject2request is deprecated in favour of RestController.putParam
 
-Version 0.3.3 (20120420)
-------------------------
+#### Version 0.3.4 (20120424)
 
-Defect #36: Requests with null param values cause NPE.
-Binary compiled for Java 5.
+* RestController.getRemoteAddress() doesn't check proxy headers.
 
-Version 0.3.2 (20120314)
-------------------------
+#### Version 0.3.3 (20120420)
 
-Patch #32: Updated Maven plugins and added versions at POM for plugins without version.
-Patch #33: Updated JAR dependencies versions
-Patch #34: Built on Java 6
-Defect #27: Extension .64 doesn't work. Now it's changed to .base64. Tests added.
-Defect #28: For resources called 'Signatures' the singular is not well made. Added an exception for signatures. Tests added.
-Defect #29: Identifiers for resources didn't allow alphabet chars although the
+* Requests with null param values cause NPE.
+* Binaries compiled for Java 5.
+
+#### Version 0.3.2 (20120314)
+
+* Updated Maven plugins and added versions at POM for plugins without version.
+* Updated JAR dependencies versions
+* Built on Java 6
+* Extension .64 doesn't work. Now it's changed to .base64. Tests added.
+* For resources called 'Signatures' the singular is not well made. Added an exception for signatures. Tests added.
+* Identifiers for resources didn't allow alphabet chars although the
             identifier started with number. Changed to allow this kind of identifiers. Tests added.
-Defect #30: GroupId for serfj must be net.sf.serfj instead of net.sf. Changed to net.sf.serfj.
-Defect #31: When not serializer is found a NullPointerException is thrown.
-Defect #35: NPE thrown when server is not reached
-Documentation #17: Fix Javadoc formatting
+* GroupId for serfj must be net.sf.serfj instead of net.sf. Changed to net.sf.serfj.
+* When not serializer is found a NullPointerException is thrown.
+* NPE thrown when server is not reached
+* Fix Javadoc formatting
 
-New dependencies:
+#### Version 0.3.1 (20110804)
 
-* slf4j-api-1.6.4
-* logback-classic-1.0.0
-* logback-core-1.0.0
-* xstream-1.4.2
-* xpp3_min-1.1.4c
-* commons-codec-1.6
-* jettison-1.3
-* stax-1.2.0
-* stax-api-1.0.1
+* Calling getId(resource) always returns null
+* Add method getId() to controllers
+* RestServlet refactor
 
-Version 0.3.1 (20110804)
-------------------------
+Copyright 2010 Eduardo Yáñez Parareda, licensed under the [Apache License]
 
-Defect #26: Calling getId(resource) always returns null
-Feature #20: Add method getId() to controllers
-Patch #25: RestServlet refactor
-
-For more information and documentation, please visit:
-  * Website: http://serfj.sourceforge.net
-  * Blog: http://serfj.wordpress.com
-  * Project hosted on GitHub: https://github.com/eyp/serfj
+[Apache License]: http://www.apache.org/licenses/LICENSE-2.0 "Apache License, Version 2.0"
 

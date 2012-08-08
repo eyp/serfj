@@ -38,6 +38,15 @@ public class RestController {
 		this.response = response;
 	}
 
+	/**
+	 * Gets the ResponseHelper associated to the request.<br>
+	 * When a controller's action is called, a ResponseHelper is set through RestController.setResponseHelper(ResponseHelper response)<br>
+	 * so the action method will be able to access objects like HttpServletResponse, ServletContext and HttpServletRequest. 
+	 */
+	public ResponseHelper getResponseHelper() {
+	    return this.response;
+	}
+	
     /**
      * Gets a Map containing all the parameters in the query string, and all the
      * attributes in the request.
@@ -57,8 +66,23 @@ public class RestController {
      * Adds an object to the request. If a page will be renderer and it needs some objects
      * to work, with this method a developer can add objects to the request, so the page can
      * obtain them.
+     * 
+     * @param name Parameter name
+     * @param object Object to put in the request
+     * @deprecated Use putParam(String name, Object object)
      */
     protected void addObject2Request(String name, Object object) {
+        this.putParam(name, object);
+    }
+
+    /**
+     * Adds an object to the request. If a page will be renderer and it needs some objects
+     * to work, with this method a developer can add objects to the request, so the page can
+     * obtain them.
+     * @param name Parameter name
+     * @param object Object to put in the request
+     */
+    protected void putParam(String name, Object object) {
         this.response.getRequest().setAttribute(name, object);
     }
 
@@ -77,18 +101,18 @@ public class RestController {
         return this.response.getRequest().getScheme() + "://" + ipAddress;
     }
     
-	/**
-	 * Returns parameter's value that is a String.
-	 * 
-	 * @param name
-	 *            Parameter's name.
-	 * @return Parameter's value.
-	 * @throws ClassCastException
-	 *             if the value is not a {@link String}.
-	 */
-	protected String getStringParam(String name) {
-		return (String) this.response.getParam(name);
-	}
+    /**
+     * Returns parameter's value that is a String.
+     * 
+     * @param name
+     *            Parameter's name.
+     * @return Parameter's value.
+     * @throws ClassCastException
+     *             if the value is not a {@link String}.
+     */
+    protected String getStringParam(String name) {
+        return (String) this.response.getParam(name);
+    }
 
     /**
      * Gets the value of an Id for the current resource.<br><br>
@@ -155,10 +179,10 @@ public class RestController {
 
 	/**
 	 * Serialize an object. Serializer class used to process the object can be
-	 * known using ResponseHelper.getSerializer() method.
+	 * known using ResponseHelper.getSerializer() method.<br><br>
+	 * The serializer used depends on the extension received in the request.
 	 * 
-	 * @param object
-	 *            Object to serialize.
+	 * @param object Object to serialize.
 	 */
 	public void serialize(Object object) {
 		this.response.serialize(object);

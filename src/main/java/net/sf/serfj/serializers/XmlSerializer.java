@@ -22,7 +22,7 @@ import com.thoughtworks.xstream.XStream;
  * 
  * @author Eduardo Yáñez
  */
-public class XmlSerializer implements Serializer {
+public class XmlSerializer implements ObjectSerializer {
 
 	/**
 	 * Serializes an object to XML using the default XStream converter.
@@ -47,12 +47,4 @@ public class XmlSerializer implements Serializer {
 	public String getContentType() {
 		return "text/xml";
 	}
-
-	/**
-	 * Returns 'xml' extension.
-	 */
-	public String getExtension() {
-		return "xml";
-	}
-
 }

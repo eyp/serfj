@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Eduardo Yáñez
  */
-public class Base64Serializer implements Serializer {
+public class Base64Serializer implements ObjectSerializer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Base64Serializer.class);
 
@@ -100,13 +100,6 @@ public class Base64Serializer implements Serializer {
 	 */
 	public String getContentType() {
 		return "application/octect-stream";
-	}
-
-	/**
-	 * @see net.sf.serfj.serializers.Serializer#getExtension()
-	 */
-	public String getExtension() {
-		return "64";
 	}
 
 	/**

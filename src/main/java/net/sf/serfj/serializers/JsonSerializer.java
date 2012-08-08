@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
  * 
  * @author Eduardo Yáñez
  */
-public class JsonSerializer implements Serializer {
+public class JsonSerializer implements ObjectSerializer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializer.class);
 
@@ -65,12 +65,5 @@ public class JsonSerializer implements Serializer {
 	 */
 	public String getContentType() {
 		return "application/json";
-	}
-
-	/**
-	 * Returns 'json' extension.
-	 */
-	public String getExtension() {
-		return "json";
 	}
 }

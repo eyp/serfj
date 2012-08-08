@@ -66,6 +66,9 @@ class UrlInspector {
 	 * @return an object with all the information related with the URL.
 	 */
 	public UrlInfo getUrlInfo(String url, HttpMethod requestMethod) {
+	    if (LOGGER.isDebugEnabled()) {
+	        LOGGER.debug("*** Retreiving information from the URL [{}] with method [{}] ***", url, requestMethod);
+	    }
 		UrlInfo info = new UrlInfo(url, requestMethod);
 		// Split URL by slash
 		String[] splits = url.split("/");
@@ -98,6 +101,9 @@ class UrlInspector {
 		// Puts the result type
 		info.setSerializer(this.getSerializerClass(resource, utils.removeQueryString(splits[lastElement])));
 		info.setExtension(this.utils.getExtension(utils.removeQueryString(splits[lastElement])));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("*** URL information retrieved ***");
+        }
 		return info;
 	}
 
