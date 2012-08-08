@@ -22,6 +22,7 @@ of the specification are out of the scope of SerfJ.
 [JSR-311]: http://jcp.org/en/jsr/detail?id=311 "JSR-311"
 
 ### Release notes
+
 #### Version 0.4.0 (20120808)
 
 * Feature: Default FileSerializer implementation, now is possible to serve files for downloading.

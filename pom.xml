@@ -22,9 +22,9 @@
         </license>
     </licenses>
     <scm>
-        <url>http://serfj.svn.sourceforge.net/svnroot/serfj/trunk</url>
-        <connection>scm:svn:http://serfj.svn.sourceforge.net/svnroot/serfj/trunk</connection>
-        <developerConnection>scm:svn:https://serfj.svn.sourceforge.net/svnroot/serfj/trunk</developerConnection>
+        <url>git@github.com/eyp/serfj.git</url>
+        <connection>scm:git:git@github.com/eyp/serfj.git</connection>
+        <developerConnection>scm:git:git@github.com/eyp/serfj.git</developerConnection>
     </scm>
     <organization>
         <name>ElPaso Software</name>
