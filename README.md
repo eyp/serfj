@@ -23,6 +23,10 @@ of the specification are out of the scope of SerfJ.
 
 ### Release notes
 
+#### Version 0.4.1 (20120914)
+
+* Fix: Communication exceptions were not launched properly.
+
 #### Version 0.4.0 (20120808)
 
 * Feature: Default FileSerializer implementation, now is possible to serve files for downloading.
