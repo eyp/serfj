@@ -105,11 +105,20 @@ public class Client {
 
 			// Gets the response
 			return this.readResponse(restUrl, conn);
+        } catch (WebServiceException e) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("WebServiceException catched. Request error", e);
+            }
+            throw e;
 		} catch (IOException e) {
-			LOGGER.error("Request error", e);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("IOException catched. Request error", e);
+            }
 			throw e;
 		} catch (Exception e) {
-            LOGGER.error("Request error", e);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Exception catched, throwing a new IOException. Request error", e);
+            }
             throw new IOException(e.getLocalizedMessage());
 		} finally {
 			if (conn != null) {
@@ -200,11 +209,20 @@ public class Client {
 			wr.flush();
 			// Gets the response
 			return this.readResponse(restUrl, conn);
+        } catch (WebServiceException e) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("WebServiceException catched. Request error", e);
+            }
+            throw e;
 		} catch (IOException e) {
-			LOGGER.error("Request error", e);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("IOException catched. Request error", e);
+            }
 			throw e;
 		} catch (Exception e) {
-            LOGGER.error("Request error", e);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Exception catched, throwing a new IOException. Request error", e);
+            }
             throw new IOException(e.getLocalizedMessage());
         } finally {
 			if (wr != null) {
@@ -216,7 +234,7 @@ public class Client {
 		}
 	}
 
-	private Object readResponse(String restUrl, HttpURLConnection conn) throws IOException, WebServiceException {
+	private Object readResponse(String restUrl, HttpURLConnection conn) throws IOException, WebServiceException, Exception {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Connection done. The server's response code is: {}", conn.getResponseCode());
 		}
@@ -270,12 +288,6 @@ public class Client {
     			}
     			return result;
 			}
-		} catch (IOException e) {
-			LOGGER.error("Request error", e);
-			throw e;
-		} catch (Exception e) {
-            LOGGER.error("Request error", e);
-            throw new IOException(e.getLocalizedMessage());
         } finally {
 			if (rd != null) {
 				rd.close();
@@ -315,7 +327,9 @@ public class Client {
 				    if (entry.getValue() != null) {
 				        url.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue(), CHARSET_ENCODING));
 				    } else {
-				        LOGGER.warn("Param {} is null", entry.getKey());
+			            if (LOGGER.isDebugEnabled()) {
+			                LOGGER.debug("WARN - Param {} is null", entry.getKey());
+			            }
                         url.append(entry.getKey()).append("=").append("");
 				    }
 				} catch (UnsupportedEncodingException ex) {
@@ -347,7 +361,9 @@ public class Client {
 		SerializerFinder finder = new SerializerFinder(extension);
 		String serializerClass = finder.findResource(null);
 		if (serializerClass == null) {
-            LOGGER.warn("Serializer not found for extension [{}]", extension);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("WARN - Serializer not found for extension [{}]", extension);
+            }
 		    return null;
 		} else {
     		try {
@@ -361,8 +377,10 @@ public class Client {
     			}
     			return deserializeMethod.invoke(clazz.newInstance(), serializedObject);
     		} catch (Exception e) {
-    			LOGGER.error(e.getLocalizedMessage(), e);
-    			LOGGER.error("Can't deserialize object with {} serializer", serializerClass);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug(e.getLocalizedMessage(), e);
+                    LOGGER.debug("Can't deserialize object with {} serializer", serializerClass);
+                }
     			throw new IOException(e.getLocalizedMessage());
     		}
 		}
