@@ -30,6 +30,11 @@ of the specification are out of the scope of SerfJ.
 Documentation: http://serfj.sourceforge.net
 
 
+Version 0.4.1 (20120914)
+------------------------
+
+* Defect: Communication exceptions were not launched properly.
+
 Version 0.4.0 (20120808)
 ------------------------
 
