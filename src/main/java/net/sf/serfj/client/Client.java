@@ -46,13 +46,10 @@ import org.slf4j.LoggerFactory;
  * @author Eduardo Yáñez
  */
 public class Client {
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
-
-	private static final String CHARSET_ENCODING = "UTF-8";
-
+	//private static final boolean DEBUG_HTTP = true;
+	private static final String CHARSET = "UTF-8";
 	private String host;
-
 	private StringBuilder urlString = new StringBuilder();
 
 	/**
@@ -94,11 +91,10 @@ public class Client {
 			// Make the URL
 			urlString = new StringBuilder(this.host).append(restUrl);
 			urlString.append(this.makeParamsString(params, true));
-			if (LOGGER.isDebugEnabled()) {
-			    LOGGER.debug("Doing HTTP request: GET [{}]", urlString.toString());
-			}
+		    LOGGER.debug("Doing HTTP request: GET [{}]", urlString.toString());
 			// Connection configuration
-			URL url = new URL(urlString.toString());
+//            Proxy proxy = DEBUG_HTTP ? new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8008)) : Proxy.NO_PROXY;			
+            URL url = new URL(urlString.toString());
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod(HttpMethod.GET.name());
 			conn.setRequestProperty("Connection", "Keep-Alive");
@@ -106,19 +102,13 @@ public class Client {
 			// Gets the response
 			return this.readResponse(restUrl, conn);
         } catch (WebServiceException e) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("WebServiceException catched. Request error", e);
-            }
+            LOGGER.debug("WebServiceException catched. Request error", e);
             throw e;
 		} catch (IOException e) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("IOException catched. Request error", e);
-            }
+            LOGGER.debug("IOException catched. Request error", e);
 			throw e;
 		} catch (Exception e) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Exception catched, throwing a new IOException. Request error", e);
-            }
+            LOGGER.debug("Exception catched, throwing a new IOException. Request error", e);
             throw new IOException(e.getLocalizedMessage());
 		} finally {
 			if (conn != null) {
@@ -187,11 +177,10 @@ public class Client {
 		try {
 			// Make the URL
 			urlString = new StringBuilder(this.host).append(restUrl);
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Doing HTTP request: POST [{}]", urlString.toString());
-            }
+            LOGGER.debug("Doing HTTP request: POST [{}]", urlString.toString());
 			// Connection configuration
-			URL url = new URL(urlString.toString());
+//            Proxy proxy = DEBUG_HTTP ? new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8008)) : Proxy.NO_PROXY;			
+            URL url = new URL(urlString.toString());
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
@@ -210,19 +199,13 @@ public class Client {
 			// Gets the response
 			return this.readResponse(restUrl, conn);
         } catch (WebServiceException e) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("WebServiceException catched. Request error", e);
-            }
+            LOGGER.debug("WebServiceException catched. Request error", e);
             throw e;
 		} catch (IOException e) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("IOException catched. Request error", e);
-            }
+            LOGGER.debug("IOException catched. Request error", e);
 			throw e;
 		} catch (Exception e) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Exception catched, throwing a new IOException. Request error", e);
-            }
+            LOGGER.debug("Exception catched, throwing a new IOException. Request error", e);
             throw new IOException(e.getLocalizedMessage());
         } finally {
 			if (wr != null) {
@@ -235,31 +218,21 @@ public class Client {
 	}
 
 	private Object readResponse(String restUrl, HttpURLConnection conn) throws IOException, WebServiceException, Exception {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Connection done. The server's response code is: {}", conn.getResponseCode());
-		}
+		LOGGER.debug("Connection done. The server's response code is: {}", conn.getResponseCode());
 		BufferedReader rd = null;
 		try {
 			InputStream is = null;
 			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Reading an OK ({}) response", HttpURLConnection.HTTP_OK);
-				}
+				LOGGER.debug("Reading an OK ({}) response", HttpURLConnection.HTTP_OK);
 				is = conn.getInputStream();
             } else if (conn.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Reading an Error ({}) response", conn.getResponseCode());
-                }
+                LOGGER.debug("Reading an Error ({}) response", conn.getResponseCode());
                 is = conn.getErrorStream();
             } else if (conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Reading a Not Found ({}) response", conn.getResponseCode());
-                }
+                LOGGER.debug("Reading a Not Found ({}) response", conn.getResponseCode());
                 throw new WebServiceException("Page or Resource Not Found", conn.getResponseCode());
 			} else if (conn.getResponseCode() == HttpURLConnection.HTTP_NO_CONTENT) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Returning a No Content (null) ({}) response", HttpURLConnection.HTTP_NO_CONTENT);
-				}
+				LOGGER.debug("Returning a No Content (null) ({}) response", HttpURLConnection.HTTP_NO_CONTENT);
 				return null;
 			}
 			if (is == null) {
@@ -273,16 +246,13 @@ public class Client {
 			while ((line = rd.readLine()) != null) {
 				response.append(line);
 			}
+            LOGGER.debug("Deserializing: {}", response.toString());
 			Object result = this.deserialize(response.toString(), UrlUtils.getInstance().getExtension(restUrl));
 			if (result == null) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Nothing was deserialized, returning read content");
-                }
+                LOGGER.debug("Nothing was deserialized, returning read content");
                 return response.toString();
 			} else {
-    			if (LOGGER.isDebugEnabled()) {
-    				LOGGER.debug("Read object in response is: {}", (result != null ? result.toString() : null));
-    			}
+				LOGGER.debug("Read object in response is: {}", (result != null ? result.toString() : null));
     			if (result instanceof Exception) {
     				throw new WebServiceException((Exception) result);
     			}
@@ -325,11 +295,9 @@ public class Client {
 					// Hay que codificar los valores de los parametros para que
 					// las llamadas REST se hagan correctamente
 				    if (entry.getValue() != null) {
-				        url.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue(), CHARSET_ENCODING));
+				        url.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue(), CHARSET));
 				    } else {
-			            if (LOGGER.isDebugEnabled()) {
-			                LOGGER.debug("WARN - Param {} is null", entry.getKey());
-			            }
+		                LOGGER.debug("WARN - Param {} is null", entry.getKey());
                         url.append(entry.getKey()).append("=").append("");
 				    }
 				} catch (UnsupportedEncodingException ex) {
@@ -355,32 +323,22 @@ public class Client {
 	 *             if object can't be deserialized.
 	 */
 	private Object deserialize(String serializedObject, String extension) throws IOException {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Deserializing object [{}] to [{}]", serializedObject, extension);
-		}
+		LOGGER.debug("Deserializing object [{}] to [{}]", serializedObject, extension);
 		SerializerFinder finder = new SerializerFinder(extension);
 		String serializerClass = finder.findResource(null);
 		if (serializerClass == null) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("WARN - Serializer not found for extension [{}]", extension);
-            }
+            LOGGER.warn("Serializer not found for extension [{}]", extension);
 		    return null;
 		} else {
     		try {
-    			if (LOGGER.isDebugEnabled()) {
-    				LOGGER.debug("Deserializing using {}", serializerClass);
-    			}
+				LOGGER.debug("Deserializing using {}", serializerClass);
     			Class<?> clazz = Class.forName(serializerClass);
     			Method deserializeMethod = clazz.getMethod("deserialize", new Class[] { String.class });
-    			if (LOGGER.isDebugEnabled()) {
-    				LOGGER.debug("Calling {}.deserialize", serializerClass);
-    			}
+				LOGGER.debug("Calling {}.deserialize", serializerClass);
     			return deserializeMethod.invoke(clazz.newInstance(), serializedObject);
     		} catch (Exception e) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(e.getLocalizedMessage(), e);
-                    LOGGER.debug("Can't deserialize object with {} serializer", serializerClass);
-                }
+                LOGGER.debug(e.getLocalizedMessage(), e);
+                LOGGER.debug("Can't deserialize object with {} serializer", serializerClass);
     			throw new IOException(e.getLocalizedMessage());
     		}
 		}

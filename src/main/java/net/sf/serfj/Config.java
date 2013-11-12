@@ -32,6 +32,11 @@ public class Config extends SystemConfig {
 	protected static final ConfigParam DEBUG = new ConfigParam("debug");
 
 	/**
+	 * HTTP Encoding. Default is UTF-8
+	 */
+	public static final ConfigParam ENCODING = new ConfigParam("encoding", "UTF-8");
+
+	/**
 	 * Java main package where the source is located.
 	 */
 	public static final ConfigParam MAIN_PACKAGE = new ConfigParam("main.package");

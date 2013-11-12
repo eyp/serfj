@@ -99,9 +99,7 @@ public class RestServlet extends HttpServlet {
 		HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod());
 		if (requestMethod == HttpMethod.POST) {
 			String httpMethodParam = request.getParameter(HTTP_METHOD_PARAM);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("param: http_method => {}", httpMethodParam);
-			}
+			LOGGER.debug("param: http_method => {}", httpMethodParam);
 			if (httpMethodParam != null) {
 				requestMethod = HttpMethod.valueOf(httpMethodParam);
 			}

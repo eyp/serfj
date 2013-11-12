@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.serfj.annotations.DoNotRenderPage;
+import net.sf.serfj.config.ConfigFileIOException;
 import net.sf.serfj.serializers.FileSerializer;
 import net.sf.serfj.serializers.ObjectSerializer;
 
@@ -59,6 +60,7 @@ public class ResponseHelper {
     private File file;
     private String attachmentFilename;
     private String contentType;
+    private Config config;
     
     /**
      * Constructor.
@@ -69,6 +71,11 @@ public class ResponseHelper {
         this.response = response;
         this.urlInfo = urlInfo;
         this.viewsPath = viewsPath;
+		try {
+			this.config = new Config("/config/serfj.properties");
+		} catch (ConfigFileIOException e) {
+			LOGGER.error("Can't load framework configuration", e);
+		}
         this.initParams();
     }
 
@@ -299,6 +306,7 @@ public class ResponseHelper {
                         this.sendFile();
                     } else {
                         LOGGER.warn("There is not object to serialize, returning no content response code: {}", HttpURLConnection.HTTP_NO_CONTENT);
+                        response.setCharacterEncoding(this.config.getString(Config.ENCODING));
                         response.setStatus(HttpURLConnection.HTTP_NO_CONTENT);
                         response.getWriter().flush();
                     }
@@ -311,21 +319,13 @@ public class ResponseHelper {
 
     protected void serialize() throws IOException {
         try {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Serializing using {}", urlInfo.getSerializer());
-            }
+            LOGGER.debug("Serializing using {}", urlInfo.getSerializer());
             Class<?> clazz = Class.forName(urlInfo.getSerializer());
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Creating a new instance of {}", urlInfo.getSerializer());
-            }
+            LOGGER.debug("Creating a new instance of {}", urlInfo.getSerializer());
             ObjectSerializer serializer = (ObjectSerializer) clazz.newInstance();
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Calling {}.serialize()", urlInfo.getSerializer());
-            }
+            LOGGER.debug("Calling {}.serialize()", urlInfo.getSerializer());
             String serialized = serializer.serialize(this.object2Serialize);
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Writing object in the response");
-            }
+            LOGGER.debug("Writing object in the response: {}", serialized);
             this.writeObject(serializer.getContentType(), serialized);
         } catch (Exception e) {
             LOGGER.error("Can't serialize object with {} serializer: {}", urlInfo.getSerializer(), e.getLocalizedMessage());
@@ -335,13 +335,9 @@ public class ResponseHelper {
 
     protected void sendFile() throws IOException {
         try {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Sending file using {}", urlInfo.getSerializer());
-            }
+            LOGGER.debug("Sending file using {}", urlInfo.getSerializer());
             Class<?> clazz = Class.forName(urlInfo.getSerializer());
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Creating a new instance of {}", urlInfo.getSerializer());
-            }
+            LOGGER.debug("Creating a new instance of {}", urlInfo.getSerializer());
             FileSerializer serializer = (FileSerializer) clazz.newInstance();
             this.writeFile(serializer);
         } catch (Exception e) {
@@ -357,9 +353,7 @@ public class ResponseHelper {
             try {
                 request.setAttribute("identifiers", urlInfo.getIdentifiers());
                 RequestDispatcher dispatcher = context.getRequestDispatcher(requestedPage);
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Forwarding to {}", requestedPage);
-                }
+                LOGGER.debug("Forwarding to {}", requestedPage);
                 dispatcher.forward(request, response);
             } catch (ServletException e) {
                 LOGGER.error(e.getLocalizedMessage(), e);
@@ -371,6 +365,7 @@ public class ResponseHelper {
     protected void writeObject(String contentType, String serialized) throws IOException {
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setContentType(contentType);
+        response.setCharacterEncoding(this.config.getString(Config.ENCODING));
         response.getWriter().write(serialized);
         response.getWriter().flush();
     }
@@ -406,9 +401,7 @@ public class ResponseHelper {
                 }
             }
         } catch (MalformedURLException e) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("URL for page is not well formed", e);
-            }
+            LOGGER.debug("URL for page is not well formed", e);
             page = "";
         }
         return page;
@@ -441,15 +434,11 @@ public class ResponseHelper {
      */
     private Boolean existsPage(String page) throws MalformedURLException {
         // Searching the page...
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Searching page [{}]...", page);
-            LOGGER.debug("Page's real path is [{}]", this.context.getRealPath(page));
-        }
+        LOGGER.debug("Searching page [{}]...", page);
+        LOGGER.debug("Page's real path is [{}]", this.context.getRealPath(page));
         File file = new File(this.context.getRealPath(page));
         Boolean exists = file.exists();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Page [{}]{}found", page, (exists ? " " : " not "));
-        }
+        LOGGER.debug("Page [{}]{}found", page, (exists ? " " : " not "));
         return exists;
     }
 }

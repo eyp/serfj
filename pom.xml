@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.serfj</groupId>
     <artifactId>serfj</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2</version>
     <packaging>jar</packaging>
     <name>SerfJ</name>
     <description>Simple Ever REST Framework for Java</description>

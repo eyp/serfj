@@ -70,9 +70,7 @@ public class ServletHelper {
             // without calling any action
             if (urlInfo.getController() != null) {
                 Strategy strategy = calculateStrategy(urlInfo.getController());
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Strategy: {}", strategy);
-                }
+                LOGGER.debug("Strategy: {}", strategy);
                 Object result = null;
                 try {
                     switch (strategy) {
@@ -135,9 +133,7 @@ public class ServletHelper {
 	 *             if controller's class doesn't exist.
 	 */
 	private Strategy calculateStrategy(String controller) throws ClassNotFoundException {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Calculating invocation strategy");
-		}
+		LOGGER.debug("Calculating invocation strategy");
 		Class<?> clazz = Class.forName(controller);
 		if (RestController.class.isAssignableFrom(clazz)) {
 			return Strategy.INHERIT;
@@ -175,18 +171,12 @@ public class ServletHelper {
 	        InvocationTargetException, InstantiationException {
 		Class<?> clazz = Class.forName(urlInfo.getController());
 		Method setResponseHelper = clazz.getMethod("setResponseHelper", new Class<?>[] { ResponseHelper.class });
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Instantiating controller {}", clazz.getCanonicalName());
-		}
+		LOGGER.debug("Instantiating controller {}", clazz.getCanonicalName());
 		Object controllerInstance = clazz.newInstance();
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Calling {}.setResponseHelper(ResponseHelper)", clazz.getCanonicalName());
-		}
+		LOGGER.debug("Calling {}.setResponseHelper(ResponseHelper)", clazz.getCanonicalName());
 		setResponseHelper.invoke(controllerInstance, responseHelper);
 		Method action = clazz.getMethod(urlInfo.getAction(), new Class[] {});
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
-		}
+		LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
 		responseHelper.notRenderPage(action);
 		return this.invokeAction(controllerInstance, action, urlInfo);
 	}
@@ -225,35 +215,27 @@ public class ServletHelper {
 		// action(ResponseHelper, Map<String,Object>)
 		Method method = this.methodExists(clazz, urlInfo.getAction(), new Class[] { ResponseHelper.class, Map.class });
 		if (method != null) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Calling {}.{}(ResponseHelper, Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
-			}
+			LOGGER.debug("Calling {}.{}(ResponseHelper, Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
 			responseHelper.notRenderPage(method);
 			result = this.invokeAction(clazz.newInstance(), method, urlInfo, responseHelper, responseHelper.getParams());
 		} else {
 			// action(ResponseHelper)
 			method = this.methodExists(clazz, urlInfo.getAction(), new Class[] { ResponseHelper.class });
 			if (method != null) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Calling {}.{}(ResponseHelper)", urlInfo.getController(), urlInfo.getAction());
-				}
+				LOGGER.debug("Calling {}.{}(ResponseHelper)", urlInfo.getController(), urlInfo.getAction());
 				responseHelper.notRenderPage(method);
 				result = this.invokeAction(clazz.newInstance(), method, urlInfo, responseHelper);
 			} else {
 				// action(Map<String,Object>)
 				method = this.methodExists(clazz, urlInfo.getAction(), new Class[] { Map.class });
 				if (method != null) {
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Calling {}.{}(Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
-					}
+					LOGGER.debug("Calling {}.{}(Map<String,Object>)", urlInfo.getController(), urlInfo.getAction());
 					responseHelper.notRenderPage(method);
 					result = this.invokeAction(clazz.newInstance(), method, urlInfo, responseHelper.getParams());
 				} else {
 					// action()
 					method = clazz.getMethod(urlInfo.getAction(), new Class[] {});
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
-					}
+					LOGGER.debug("Calling {}.{}()", urlInfo.getController(), urlInfo.getAction());
 					responseHelper.notRenderPage(method);
 					result = this.invokeAction(clazz.newInstance(), method, urlInfo);
 				}
