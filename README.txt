@@ -30,6 +30,11 @@ of the specification are out of the scope of SerfJ.
 Documentation: http://serfj.sourceforge.net
 
 
+Version 0.4.2 (20131112)
+------------------------
+
+* Feature: Added a new config param 'encoding' with default value to UTF-8 for encoding responses.
+
 Version 0.4.1 (20120914)
 ------------------------
 
