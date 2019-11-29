@@ -1,5 +1,8 @@
 SerfJ - Simplest Ever REST Framework for Java
 =============================================
+
+### Since nowadays there's no meaning for a framework like this, the project is discontinued.
+
 Using SerfJ is the easiest way of developing Java [REST] web applications. It helps
 you develop your application over an elegant MVC arquitecture, giving more importance
 to convention than configuration, so for example, you will not have to have configuration 
